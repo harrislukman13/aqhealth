@@ -1,4 +1,5 @@
 import 'package:aqhealth/authentication/login.dart';
+import 'package:aqhealth/authentication/register.dart';
 import 'package:aqhealth/pages/dashboard/mainpage.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const Mainpage(),
+      home: const Register(),
     );
   }
 }

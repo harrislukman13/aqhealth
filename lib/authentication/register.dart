@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:aqhealth/styles/app_color.dart';
+import 'package:aqhealth/styles/custom_text_field.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:sizer/sizer.dart';
-import 'package:aqhealth/styles/custom_text_field.dart';
 
-class UserLogin extends StatefulWidget {
-  const UserLogin({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<UserLogin> createState() => _UserLoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _UserLoginState extends State<UserLogin> {
+class _RegisterState extends State<Register> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
+  final FocusNode _nameFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
+  final FocusNode _confirmPasswordFocus = FocusNode();
 
   final GlobalKey<FormState> _formKey = GlobalKey();
-
   bool isLoading = false;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,6 +37,14 @@ class _UserLoginState extends State<UserLogin> {
               child: Scaffold(
                 body: Container(
                   decoration: BoxDecoration(
+                    // gradient: LinearGradient(
+                    //   begin: Alignment.topLeft,
+                    //   end: Alignment.bottomCenter,
+                    //   colors: [
+                    //     AppColor.secondary,
+                    //     AppColor.primary,
+                    //   ],
+                    // ),
                     color: Colors.white54,
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -42,10 +53,13 @@ class _UserLoginState extends State<UserLogin> {
                       Container(
                         alignment: Alignment.centerRight,
                         child: IconButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
                           icon: Icon(
                             Ionicons.close,
-                            color: Colors.indigo,
+                            color: AppColor.primary,
                             size: 28,
                           ),
                         ),
@@ -59,12 +73,21 @@ class _UserLoginState extends State<UserLogin> {
                               Text(
                                 'AQhealth',
                                 style: TextStyle(
-                                  color: Colors.indigo,
+                                  color: AppColor.primary,
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               const SizedBox(height: 20),
+                              CustomTextFormField(
+                                hintText: 'Name',
+                                focusNode: _nameFocus,
+                                controller: _nameController,
+                                validator: (value) => value!.length <= 30
+                                    ? 'less than 30 character'
+                                    : null,
+                              ),
+                              const SizedBox(height: 10),
                               CustomTextFormField(
                                 hintText: 'Emeil',
                                 focusNode: _emailFocus,
@@ -82,13 +105,24 @@ class _UserLoginState extends State<UserLogin> {
                                 controller: _passwordController,
                                 isObscured: true,
                                 validator: (value) => value!.length <= 5
-                                    ? 'Password need to have 6 digit character'
+                                    ? 'at least 6 character'
                                     : null,
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
+                              CustomTextFormField(
+                                hintText: 'Conform Password',
+                                focusNode: _confirmPasswordFocus,
+                                controller: _confirmPasswordController,
+                                isObscured: true,
+                                validator: (value) =>
+                                    value! != _passwordController.text
+                                        ? 'Password is not correct'
+                                        : null,
+                              ),
+                              const SizedBox(height: 15),
                               TextButton(
                                 style: TextButton.styleFrom(
-                                  backgroundColor: Colors.indigo,
+                                  backgroundColor: AppColor.primary,
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 15,
                                     horizontal: 20,
@@ -98,24 +132,27 @@ class _UserLoginState extends State<UserLogin> {
                                   ),
                                 ),
                                 onPressed: () async {
+                                  FocusScope.of(context).unfocus();
                                   setState(() {
                                     isLoading = true;
                                   });
 
                                   //if (_formKey.currentState!.validate()) {
-                                  //await widget.userDAO.login(
-                                  //_emailController.text,
-                                  // _passwordController.text);
-                                  // }
+                                  //await widget.userDAO.register(
+                                  //    _emailController.text,
+                                  //    _icController.text,
+                                  //   _passwordController.text);
+                                  //}
 
                                   setState(() {
                                     isLoading = false;
                                   });
 
                                   Navigator.pop(context);
+                                  Navigator.pop(context);
                                 },
                                 child: const Text(
-                                  'Log In',
+                                  'Register',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -123,24 +160,18 @@ class _UserLoginState extends State<UserLogin> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Text(
-                                      'Forgot Password?',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.indigo,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                  Text(
+                                    'Already have account?',
+                                    style: TextStyle(fontSize: 12),
                                   ),
-                                  SizedBox(width: 20),
+                                  SizedBox(width: 10),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () => Navigator.pop(context),
                                     child: Text(
-                                      'Create Account',
+                                      'Log In',
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Colors.indigo,
+                                        color: AppColor.primary,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -156,14 +187,13 @@ class _UserLoginState extends State<UserLogin> {
                 ),
               ),
             ),
-            //!isLoading
-            //? const SizedBox.shrink()
-            //: Container(
-            //  color: Colors.white.withOpacity(0.4),
-            // alignment: Alignment.center,
-            //  child: SpinKitChasingDots(color: AppColor.primary),
-            //)
-            //)
+            !isLoading
+                ? const SizedBox.shrink()
+                : Container(
+                    color: Colors.white.withOpacity(0.4),
+                    alignment: Alignment.center,
+                    //child: SpinKitChasingDots(color: AppColor.primary),
+                  ),
           ],
         ),
       ),
