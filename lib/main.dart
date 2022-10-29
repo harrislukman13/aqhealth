@@ -1,5 +1,5 @@
-import 'package:aqhealth/authentication/login.dart';
-import 'package:aqhealth/authentication/register.dart';
+import 'package:aqhealth/pages/authentication/login.dart';
+import 'package:aqhealth/pages/authentication/register.dart';
 import 'package:aqhealth/pages/dashboard/mainpage.dart';
 import 'package:flutter/material.dart';
 
