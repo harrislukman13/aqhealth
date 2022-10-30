@@ -1,5 +1,8 @@
+import 'package:aqhealth/pages/dashboard/home/home.dart';
+import 'package:aqhealth/styles/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:aqhealth/widget/custom_animated_bottom_bar.dart';
+//import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 
 class Mainpage extends StatefulWidget {
   const Mainpage({Key? key}) : super(key: key);
@@ -14,6 +17,7 @@ class _MainpageState extends State<Mainpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: const NavDrawer(),
         appBar: _buildAppBar(),
         body: getBody(),
         bottomNavigationBar: _buildBottomBar());
@@ -30,12 +34,6 @@ class _MainpageState extends State<Mainpage> {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(10))),
       iconTheme: IconThemeData(color: Colors.white),
-      leading: IconButton(
-        icon: Icon(
-          Icons.menu,
-        ),
-        onPressed: () {},
-      ),
     );
   }
 
@@ -75,26 +73,13 @@ class _MainpageState extends State<Mainpage> {
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
-        BottomNavyBarItem(
-          icon: Icon(Icons.people),
-          title: Text('Profile'),
-          activeColor: Colors.indigo,
-          inactiveColor: _inactiveColor,
-          textAlign: TextAlign.center,
-        ),
       ],
     );
   }
 
   Widget getBody() {
     List<Widget> pages = [
-      Container(
-        alignment: Alignment.center,
-        child: Text(
-          "Home",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-      ),
+      Home(),
       Container(
         alignment: Alignment.center,
         child: Text(
@@ -109,17 +94,51 @@ class _MainpageState extends State<Mainpage> {
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
       ),
-      Container(
-        alignment: Alignment.center,
-        child: Text(
-          "Settings",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-      ),
     ];
     return IndexedStack(
       index: _currentIndex,
       children: pages,
+    );
+  }
+}
+
+class NavDrawer extends StatelessWidget {
+  const NavDrawer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: CircleAvatar(
+              radius: 65,
+              backgroundColor: AppColor.primary,
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.input),
+            title: Text('Home'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: Text('Appointment'),
+            onTap: () => {Navigator.of(context).pop()},
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Profile'),
+            onTap: () => {Navigator.of(context).pop()},
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () => {Navigator.of(context).pop()},
+          ),
+        ],
+      ),
     );
   }
 }
