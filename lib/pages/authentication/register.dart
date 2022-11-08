@@ -4,6 +4,7 @@ import 'package:aqhealth/styles/custom_text_field.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:sizer/sizer.dart';
 
+
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
 

@@ -33,4 +33,30 @@ class Auth {
       return null;
     }
   }
+
+  static Future<dynamic> login(
+      {required String email, required String password}) async {
+    try {
+      String url = '${Config.hostName}/login';
+
+      var response = await post(Uri.parse(url),
+          body: jsonEncode({
+            'email': email,
+            'password': password,
+          }),
+          headers: headersWithoutToken());
+
+      log(response.body);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        return data;
+      }
+
+      return null;
+    } catch (e) {
+      log('login' + e.toString());
+      return null;
+    }
+  }
 }

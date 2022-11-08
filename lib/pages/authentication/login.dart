@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:sizer/sizer.dart';
 import 'package:aqhealth/styles/custom_text_field.dart';
+import 'package:aqhealth/DAO/patientDAO.dart';
 
 class UserLogin extends StatefulWidget {
-  const UserLogin({Key? key}) : super(key: key);
+  const UserLogin({Key? key, required this.patientDAO}) : super(key: key);
 
+  final PatientDAO patientDAO;
   @override
   State<UserLogin> createState() => _UserLoginState();
 }
@@ -102,11 +104,11 @@ class _UserLoginState extends State<UserLogin> {
                                     isLoading = true;
                                   });
 
-                                  //if (_formKey.currentState!.validate()) {
-                                  //await widget.userDAO.login(
-                                  //_emailController.text,
-                                  // _passwordController.text);
-                                  // }
+                                  if (_formKey.currentState!.validate()) {
+                                    await widget.patientDAO.login(
+                                        _emailController.text,
+                                        _passwordController.text);
+                                  }
 
                                   setState(() {
                                     isLoading = false;

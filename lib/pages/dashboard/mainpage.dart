@@ -23,10 +23,8 @@ class _MainpageState extends State<Mainpage> {
         bottomNavigationBar: _buildBottomBar());
   }
 
-  //////////////////////
+  
   //appbar widget////
-  //////////////////
-  ///
   AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.indigo[800],
@@ -124,7 +122,7 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.verified_user),
-            title: Text('Appointment'),
+            title: Text('QR code'),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(

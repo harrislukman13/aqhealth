@@ -14,10 +14,23 @@ class Home extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(onPressed: (() {}), icon: Icon(Icons.abc_rounded)),
-                IconButton(onPressed: (() {}), icon: Icon(Icons.abc_rounded)),
+                MenuBox(
+                    icon: 'assets/icons/appoinment.jpg',
+                    label: 'Make Appoinment',
+                    onTap: () {}),
+                MenuBox(
+                    icon: 'assets/icons/appoinment.jpg',
+                    label: 'Make Appoinment',
+                    onTap: () {}),
               ]),
-          Text("Appoinment Today"),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            "Appoinment Today",
+            style: TextStyle(color: Colors.indigo),
+            textAlign: TextAlign.start,
+          ),
           Card(
             elevation: 5.0,
             shape:
@@ -107,13 +120,11 @@ class MenuBox extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: Image.asset(
-                  icon,
-                  color: AppColor.primary,
-                  width: 2,
-                  height: 5,
-                ),
+              Image.asset(
+                icon,
+                color: AppColor.primary,
+                width: 20,
+                height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 5),
@@ -121,7 +132,7 @@ class MenuBox extends StatelessWidget {
                   label,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 3.5,
+                    fontSize: 2,
                     color: AppColor.primary,
                   ),
                 ),
