@@ -10,6 +10,23 @@ class CreateAppointment extends StatefulWidget {
 class _CreateAppointmentState extends State<CreateAppointment> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Create Appointment"),
+        backgroundColor: Colors.indigo[800],
+        elevation: 0,
+      ),
+      body: ListView.builder(
+        itemBuilder: (context, position) {
+          return listappointment();
+        },
+      ),
+    );
   }
+
+  Card listappointment() => Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 2,
+        child: Text("Cardiology"),
+      );
 }
