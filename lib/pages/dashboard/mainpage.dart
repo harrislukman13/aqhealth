@@ -1,7 +1,12 @@
 import 'package:aqhealth/pages/dashboard/home/home.dart';
+import 'package:aqhealth/pages/profile/profile.dart';
+import 'package:aqhealth/pages/queusystem/queue.dart';
 import 'package:aqhealth/styles/app_color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:aqhealth/widget/custom_animated_bottom_bar.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:sizer/sizer.dart';
 //import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 
 class Mainpage extends StatefulWidget {
@@ -23,7 +28,6 @@ class _MainpageState extends State<Mainpage> {
         bottomNavigationBar: _buildBottomBar());
   }
 
-  
   //appbar widget////
   AppBar _buildAppBar() {
     return AppBar(
@@ -39,37 +43,29 @@ class _MainpageState extends State<Mainpage> {
   ///bottom navigation
   ///////////
   Widget _buildBottomBar() {
-    return CustomAnimatedBottomBar(
-      containerHeight: 70,
+    return BottomNavigationBar(
       backgroundColor: Colors.white,
-      selectedIndex: _currentIndex,
-      showElevation: true,
-      itemCornerRadius: 24,
-      curve: Curves.easeIn,
-      onItemSelected: (index) => setState(() => _currentIndex = index),
-      items: <BottomNavyBarItem>[
-        BottomNavyBarItem(
-          icon: Icon(Icons.apps),
-          title: Text('Home'),
-          activeColor: Colors.indigo,
-          inactiveColor: _inactiveColor,
-          textAlign: TextAlign.center,
+      currentIndex: _currentIndex,
+      selectedFontSize: 3.w,
+      unselectedFontSize: 3.w,
+      iconSize: 6.w,
+      selectedItemColor: AppColor.primary,
+      onTap: (index) => setState(() => _currentIndex = index),
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          activeIcon: Icon(Ionicons.grid),
+          icon: Icon(Ionicons.grid_outline),
+          label: 'Home',
         ),
-        BottomNavyBarItem(
-          icon: Icon(Icons.book),
-          title: Text('Appoinment'),
-          activeColor: Colors.indigo,
-          inactiveColor: _inactiveColor,
-          textAlign: TextAlign.center,
+        BottomNavigationBarItem(
+          activeIcon: Icon(Ionicons.book),
+          icon: Icon(Ionicons.book_outline),
+          label: 'Appoinment',
         ),
-        BottomNavyBarItem(
-          icon: Icon(Icons.queue),
-          title: Text(
-            'Queue ',
-          ),
-          activeColor: Colors.indigo,
-          inactiveColor: _inactiveColor,
-          textAlign: TextAlign.center,
+        BottomNavigationBarItem(
+          activeIcon: Icon(Ionicons.contract),
+          icon: Icon(Ionicons.contract_outline),
+          label: 'Queue ',
         ),
       ],
     );
@@ -85,13 +81,7 @@ class _MainpageState extends State<Mainpage> {
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
       ),
-      Container(
-        alignment: Alignment.center,
-        child: Text(
-          "Messages",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-      ),
+      Queue()
     ];
     return IndexedStack(
       index: _currentIndex,
@@ -128,7 +118,10 @@ class NavDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              Navigator.push(
+                  context, CupertinoPageRoute(builder: (context) => Profile()))
+            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
