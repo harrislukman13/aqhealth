@@ -1,21 +1,30 @@
+import 'package:aqhealth/controller/Authcountroller.dart';
+import 'package:aqhealth/pages/authentication/register.dart';
+import 'package:aqhealth/pages/dashboard/mainpage.dart';
+import 'package:aqhealth/styles/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:sizer/sizer.dart';
 import 'package:aqhealth/styles/custom_text_field.dart';
 import 'package:aqhealth/DAO/patientDAO.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class UserLogin extends StatefulWidget {
-  const UserLogin({Key? key, required this.patientDAO}) : super(key: key);
-
-  final PatientDAO patientDAO;
+  const UserLogin({
+    Key? key,
+    required this.toggleView,
+  }) : super(key: key);
+  final Function toggleView;
   @override
   State<UserLogin> createState() => _UserLoginState();
 }
 
 class _UserLoginState extends State<UserLogin> {
+  final AuthController _auth = AuthController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String error = '';
 
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
@@ -105,16 +114,17 @@ class _UserLoginState extends State<UserLogin> {
                                   });
 
                                   if (_formKey.currentState!.validate()) {
-                                    await widget.patientDAO.login(
-                                        _emailController.text,
-                                        _passwordController.text);
+                                    dynamic result = _auth.singIn(
+                                        _emailController.text.trim(),
+                                        _passwordController.text.trim());
+
+                                    if (result == null) {
+                                      setState(() {
+                                        error = 'cannot LogIn';
+                                        isLoading = false;
+                                      });
+                                    }
                                   }
-
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-
-                                  Navigator.pop(context);
                                 },
                                 child: const Text(
                                   'Log In',
@@ -137,16 +147,15 @@ class _UserLoginState extends State<UserLogin> {
                                   ),
                                   SizedBox(width: 20),
                                   GestureDetector(
-                                    onTap: () {},
-                                    child: Text(
-                                      'Create Account',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.indigo,
-                                        fontWeight: FontWeight.bold,
+                                      child: Text(
+                                        'Create Account',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.indigo,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                      onTap: () => widget.toggleView),
                                 ],
                               ),
                             ],
@@ -158,14 +167,13 @@ class _UserLoginState extends State<UserLogin> {
                 ),
               ),
             ),
-            //!isLoading
-            //? const SizedBox.shrink()
-            //: Container(
-            //  color: Colors.white.withOpacity(0.4),
-            // alignment: Alignment.center,
-            //  child: SpinKitChasingDots(color: AppColor.primary),
-            //)
-            //)
+            !isLoading
+                ? const SizedBox.shrink()
+                : Container(
+                    color: Colors.white.withOpacity(0.4),
+                    alignment: Alignment.center,
+                    child: SpinKitChasingDots(color: AppColor.primary),
+                  )
           ],
         ),
       ),

@@ -1,12 +1,21 @@
+import 'package:aqhealth/controller/Authcountroller.dart';
+import 'package:aqhealth/pages/authentication/login.dart';
+import 'package:aqhealth/pages/profile/complete_profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:aqhealth/styles/app_color.dart';
 import 'package:aqhealth/styles/custom_text_field.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:aqhealth/DAO/patientDAO.dart';
 import 'package:sizer/sizer.dart';
 
-
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  const Register({
+    Key? key,
+    required this.toggleView,
+  }) : super(key: key);
+  final Function toggleView;
 
   @override
   State<Register> createState() => _RegisterState();
@@ -79,15 +88,6 @@ class _RegisterState extends State<Register> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 20),
-                              CustomTextFormField(
-                                hintText: 'Name',
-                                focusNode: _nameFocus,
-                                controller: _nameController,
-                                validator: (value) => value!.length <= 30
-                                    ? 'less than 30 character'
-                                    : null,
-                              ),
                               const SizedBox(height: 10),
                               CustomTextFormField(
                                 hintText: 'Emeil',
@@ -111,7 +111,7 @@ class _RegisterState extends State<Register> {
                               ),
                               const SizedBox(height: 10),
                               CustomTextFormField(
-                                hintText: 'Conform Password',
+                                hintText: 'Confirm Password',
                                 focusNode: _confirmPasswordFocus,
                                 controller: _confirmPasswordController,
                                 isObscured: true,
@@ -138,19 +138,19 @@ class _RegisterState extends State<Register> {
                                     isLoading = true;
                                   });
 
-                                  //if (_formKey.currentState!.validate()) {
-                                  //await widget.userDAO.register(
-                                  //    _emailController.text,
-                                  //    _icController.text,
-                                  //   _passwordController.text);
-                                  //}
-
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
+                                  if (_formKey.currentState!.validate()) {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                completProfile(
+                                                  email: _emailController.text
+                                                      .trim(),
+                                                  password: _passwordController
+                                                      .text
+                                                      .trim(),
+                                                )));
+                                  }
                                 },
                                 child: const Text(
                                   'Register',
@@ -167,16 +167,15 @@ class _RegisterState extends State<Register> {
                                   ),
                                   SizedBox(width: 10),
                                   GestureDetector(
-                                    onTap: () => Navigator.pop(context),
-                                    child: Text(
-                                      'Log In',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: AppColor.primary,
-                                        fontWeight: FontWeight.bold,
+                                      child: Text(
+                                        'Log In',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AppColor.primary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                      onTap: () => widget.toggleView),
                                 ],
                               ),
                             ],
@@ -193,7 +192,7 @@ class _RegisterState extends State<Register> {
                 : Container(
                     color: Colors.white.withOpacity(0.4),
                     alignment: Alignment.center,
-                    //child: SpinKitChasingDots(color: AppColor.primary),
+                    child: SpinKitChasingDots(color: AppColor.primary),
                   ),
           ],
         ),

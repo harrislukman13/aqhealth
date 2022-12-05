@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+/*import 'package:flutter/cupertino.dart';
 import 'package:aqhealth/model/patient.dart';
 import 'package:aqhealth/Services/secure_storage.dart';
 import 'package:aqhealth/controller/Authcountroller.dart';
@@ -22,8 +22,8 @@ class PatientDAO extends ChangeNotifier {
   }
 
   // OVERWRITE WITH NEW DATA
-  //*getLatestData(String token, String userID) async {
-  // dynamic data = await AuthController.getProfile(userID);
+  //getLatestData(String token, String userID) async {
+  //dynamic data = await AuthController.getProfile(userID);
 
   //  if (data != null) {
   //   Box _userBox = await Hive.openBox('user');
@@ -36,7 +36,8 @@ class PatientDAO extends ChangeNotifier {
 
   // LOGIN
   login(String email, String password) async {
-    dynamic data = await Auth.login(email: email, password: password);
+    AuthController auth = AuthController();
+    dynamic data = await auth.login(email: email, password: password);
 
     if (data != null) {
       SecureStorage _secureStorage = SecureStorage();
@@ -47,9 +48,10 @@ class PatientDAO extends ChangeNotifier {
   }
 
   // REGISTER
-  register(String email, String ic, String password) async {
+  register(String email, String name, String password) async {
+    AuthController auth = AuthController();
     dynamic data =
-        await Auth.register(email: email, ic: ic, password: password);
+        await auth.register(email: email, name: name, password: password);
 
     if (data != null) {
       SecureStorage _secureStorage = SecureStorage();
@@ -59,42 +61,6 @@ class PatientDAO extends ChangeNotifier {
     }
   }
 
-  // COMPLETE
-  /* Future<bool> complete(String userID, XFile? paymentProve, XFile? addressProve,
-      Map<String, String> data) async {
-    bool res = await AuthController.complete(
-        data: data, paymentProve: paymentProve, addressProve: addressProve);
-
-    if (res) {
-      User user = User(
-        id: data['user_id'],
-        personID: data['person_id'],
-        mosqueID: data['mosque_id'],
-        villageID: data['village_id'],
-        name: data['person_name'],
-        ic: data['person_ic'],
-        phone: data['address'],
-        address: data['person_address'],
-        occupation: data['person_occupation'],
-        status: data['person_status'],
-      );
-
-      SecureStorage _secureStorage = SecureStorage();
-      String? _token = await _secureStorage.read('token');
-      if (_token != null) {
-        Box _userBox = await Hive.openBox('user');
-        _userBox.put(_token, user);
-
-        _user = user;
-        log('completed');
-        notifyListeners();
-      }
-    }
-
-    return res;
-  }
-*/
-
   // LOGOUT
   logout() async {
     SecureStorage _secureStorage = SecureStorage();
@@ -103,3 +69,4 @@ class PatientDAO extends ChangeNotifier {
     notifyListeners();
   }
 }
+*/

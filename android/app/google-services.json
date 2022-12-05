@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "636292154698",
+    "project_id": "aqhealth-d8be5",
+    "storage_bucket": "aqhealth-d8be5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636292154698:android:6f38bc90833a3ee8906db3",
+        "android_client_info": {
+          "package_name": "com.example.aqhealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "636292154698-qjqc0rv03ij31bvhm4087h596hvpmu3p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL6QSg8aWDB4q8xvQECrrzjd8MhJNW72s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "636292154698-qjqc0rv03ij31bvhm4087h596hvpmu3p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

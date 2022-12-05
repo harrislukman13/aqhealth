@@ -36,7 +36,7 @@ class Home extends StatelessWidget {
                               builder: (context) => CreateAppointment()))),
                   MenuBox(
                       icon: 'assets/icons/appoinment.ico',
-                      label: 'Health Screening',
+                      label: 'My Appointment',
                       onTap: () {}),
                 ]),
             SizedBox(

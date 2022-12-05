@@ -10,7 +10,9 @@ import 'package:sizer/sizer.dart';
 //import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 
 class Mainpage extends StatefulWidget {
-  const Mainpage({Key? key}) : super(key: key);
+  const Mainpage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Mainpage> createState() => _MainpageState();
@@ -58,14 +60,14 @@ class _MainpageState extends State<Mainpage> {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          activeIcon: Icon(Ionicons.book),
-          icon: Icon(Ionicons.book_outline),
-          label: 'Appoinment',
-        ),
-        BottomNavigationBarItem(
           activeIcon: Icon(Ionicons.contract),
           icon: Icon(Ionicons.contract_outline),
           label: 'Queue ',
+        ),
+        BottomNavigationBarItem(
+          activeIcon: Icon(Ionicons.person),
+          icon: Icon(Ionicons.person_outline),
+          label: 'Profile',
         ),
       ],
     );
@@ -74,14 +76,8 @@ class _MainpageState extends State<Mainpage> {
   Widget getBody() {
     List<Widget> pages = [
       Home(),
-      Container(
-        alignment: Alignment.center,
-        child: Text(
-          "Users",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-      ),
-      Queue()
+      Queue(),
+      Profile(),
     ];
     return IndexedStack(
       index: _currentIndex,

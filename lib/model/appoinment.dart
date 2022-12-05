@@ -1,0 +1,5 @@
+class appointment {
+  DateTime? date;
+  
+
+}
