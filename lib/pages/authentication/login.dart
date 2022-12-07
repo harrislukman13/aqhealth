@@ -40,127 +40,103 @@ class _UserLoginState extends State<UserLogin> {
       child: SafeArea(
         child: Stack(
           children: [
-            GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Scaffold(
-                body: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white54,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+            Scaffold(
+              body: Expanded(
+                child: Form(
+                  key: _formKey,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: Icon(
-                            Ionicons.close,
-                            color: Colors.indigo,
-                            size: 28,
-                          ),
+                      Text(
+                        'AQhealth',
+                        style: TextStyle(
+                          color: Colors.indigo,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Expanded(
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'AQhealth',
-                                style: TextStyle(
+                      const SizedBox(height: 20),
+                      CustomTextFormField(
+                        hintText: 'Emeil',
+                        focusNode: _emailFocus,
+                        controller: _emailController,
+                        validator: (value) =>
+                            RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(value!)
+                                ? null
+                                : 'Emeil is not valid!',
+                      ),
+                      const SizedBox(height: 10),
+                      CustomTextFormField(
+                        hintText: 'Password',
+                        focusNode: _passwordFocus,
+                        controller: _passwordController,
+                        isObscured: true,
+                        validator: (value) => value!.length <= 5
+                            ? 'Password need to have 6 digit character'
+                            : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.indigo,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 20,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          if (_formKey.currentState!.validate()) {
+                            dynamic result = _auth.singIn(
+                                _emailController.text.trim(),
+                                _passwordController.text.trim());
+
+                            if (result == null) {
+                              setState(() {
+                                error = 'cannot LogIn';
+                                isLoading = false;
+                              });
+                            }
+                          }
+                        },
+                        child: const Text(
+                          'Log In',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                  fontSize: 12,
                                   color: Colors.indigo,
-                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          GestureDetector(
+                              child: Text(
+                                'Create Account',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.indigo,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 20),
-                              CustomTextFormField(
-                                hintText: 'Emeil',
-                                focusNode: _emailFocus,
-                                controller: _emailController,
-                                validator: (value) =>
-                                    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                            .hasMatch(value!)
-                                        ? null
-                                        : 'Emeil is not valid!',
-                              ),
-                              const SizedBox(height: 10),
-                              CustomTextFormField(
-                                hintText: 'Password',
-                                focusNode: _passwordFocus,
-                                controller: _passwordController,
-                                isObscured: true,
-                                validator: (value) => value!.length <= 5
-                                    ? 'Password need to have 6 digit character'
-                                    : null,
-                              ),
-                              SizedBox(height: 10),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.indigo,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 15,
-                                    horizontal: 20,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-
-                                  if (_formKey.currentState!.validate()) {
-                                    dynamic result = _auth.singIn(
-                                        _emailController.text.trim(),
-                                        _passwordController.text.trim());
-
-                                    if (result == null) {
-                                      setState(() {
-                                        error = 'cannot LogIn';
-                                        isLoading = false;
-                                      });
-                                    }
-                                  }
-                                },
-                                child: const Text(
-                                  'Log In',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Text(
-                                      'Forgot Password?',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.indigo,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  SizedBox(width: 20),
-                                  GestureDetector(
-                                      child: Text(
-                                        'Create Account',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.indigo,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      onTap: () => widget.toggleView),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                              onTap: () => widget.toggleView),
+                        ],
                       ),
                     ],
                   ),

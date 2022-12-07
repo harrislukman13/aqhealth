@@ -42,145 +42,105 @@ class _RegisterState extends State<Register> {
       child: SafeArea(
         child: Stack(
           children: [
-            GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Scaffold(
-                body: Container(
-                  decoration: BoxDecoration(
-                    // gradient: LinearGradient(
-                    //   begin: Alignment.topLeft,
-                    //   end: Alignment.bottomCenter,
-                    //   colors: [
-                    //     AppColor.secondary,
-                    //     AppColor.primary,
-                    //   ],
-                    // ),
-                    color: Colors.white54,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+            Scaffold(
+              body: Expanded(
+                child: Form(
+                  key: _formKey,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Ionicons.close,
-                            color: AppColor.primary,
-                            size: 28,
-                          ),
+                      Text(
+                        'AQhealth',
+                        style: TextStyle(
+                          color: AppColor.primary,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Expanded(
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'AQhealth',
+                      const SizedBox(height: 10),
+                      CustomTextFormField(
+                        hintText: 'Emeil',
+                        focusNode: _emailFocus,
+                        controller: _emailController,
+                        validator: (value) =>
+                            RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(value!)
+                                ? null
+                                : 'Emeil is not valid!',
+                      ),
+                      const SizedBox(height: 10),
+                      CustomTextFormField(
+                        hintText: 'Password',
+                        focusNode: _passwordFocus,
+                        controller: _passwordController,
+                        isObscured: true,
+                        validator: (value) =>
+                            value!.length <= 5 ? 'at least 6 character' : null,
+                      ),
+                      const SizedBox(height: 10),
+                      CustomTextFormField(
+                        hintText: 'Confirm Password',
+                        focusNode: _confirmPasswordFocus,
+                        controller: _confirmPasswordController,
+                        isObscured: true,
+                        validator: (value) => value! != _passwordController.text
+                            ? 'Password is not correct'
+                            : null,
+                      ),
+                      const SizedBox(height: 15),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppColor.primary,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 20,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () async {
+                          FocusScope.of(context).unfocus();
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          if (_formKey.currentState!.validate()) {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => completProfile(
+                                          email: _emailController.text.trim(),
+                                          password:
+                                              _passwordController.text.trim(),
+                                        )));
+                          }
+                        },
+                        child: const Text(
+                          'Register',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Already have account?',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          SizedBox(width: 10),
+                          GestureDetector(
+                              child: Text(
+                                'Log In',
                                 style: TextStyle(
+                                  fontSize: 12,
                                   color: AppColor.primary,
-                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              CustomTextFormField(
-                                hintText: 'Emeil',
-                                focusNode: _emailFocus,
-                                controller: _emailController,
-                                validator: (value) =>
-                                    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                            .hasMatch(value!)
-                                        ? null
-                                        : 'Emeil is not valid!',
-                              ),
-                              const SizedBox(height: 10),
-                              CustomTextFormField(
-                                hintText: 'Password',
-                                focusNode: _passwordFocus,
-                                controller: _passwordController,
-                                isObscured: true,
-                                validator: (value) => value!.length <= 5
-                                    ? 'at least 6 character'
-                                    : null,
-                              ),
-                              const SizedBox(height: 10),
-                              CustomTextFormField(
-                                hintText: 'Confirm Password',
-                                focusNode: _confirmPasswordFocus,
-                                controller: _confirmPasswordController,
-                                isObscured: true,
-                                validator: (value) =>
-                                    value! != _passwordController.text
-                                        ? 'Password is not correct'
-                                        : null,
-                              ),
-                              const SizedBox(height: 15),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: AppColor.primary,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 15,
-                                    horizontal: 20,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  FocusScope.of(context).unfocus();
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-
-                                  if (_formKey.currentState!.validate()) {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) =>
-                                                completProfile(
-                                                  email: _emailController.text
-                                                      .trim(),
-                                                  password: _passwordController
-                                                      .text
-                                                      .trim(),
-                                                )));
-                                  }
-                                },
-                                child: const Text(
-                                  'Register',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Already have account?',
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  SizedBox(width: 10),
-                                  GestureDetector(
-                                      child: Text(
-                                        'Log In',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: AppColor.primary,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      onTap: () => widget.toggleView),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                              onTap: () => widget.toggleView),
+                        ],
                       ),
                     ],
                   ),
