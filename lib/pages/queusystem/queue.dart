@@ -37,7 +37,7 @@ class _QueueState extends State<Queue> {
               height: 3.h,
             ),
             SizedBox(
-              height: 15.h,
+              height: 18.h,
               width: 24.h,
               child: Card(
                 elevation: 5,
@@ -47,6 +47,7 @@ class _QueueState extends State<Queue> {
                 child: Container(
                   padding: EdgeInsets.all(2.h),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //drname
                       Text(

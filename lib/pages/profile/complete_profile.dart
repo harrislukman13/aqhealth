@@ -70,7 +70,7 @@ class _completProfileState extends State<completProfile> {
                       focusNode: _nameFocus,
                       controller: _nameController,
                       validator: (value) =>
-                          value!.length <= 10 ? 'less than 30 character' : null,
+                          value!.isEmpty ? 'Please fill the blank' : null,
                     ),
                     const SizedBox(height: 20),
                     CustomTextFormField(
@@ -126,7 +126,7 @@ class _completProfileState extends State<completProfile> {
                       focusNode: _phonenumFocus,
                       controller: _phonenumController,
                       validator: (value) =>
-                          value!.length <= 30 ? 'less than 30 character' : null,
+                          value!.isEmpty ? 'please fill the blank' : null,
                     ),
                     const SizedBox(height: 20),
                     CustomTextFormField(
@@ -134,7 +134,7 @@ class _completProfileState extends State<completProfile> {
                       focusNode: _addressFocus,
                       controller: _addressController,
                       validator: (value) =>
-                          value!.length <= 30 ? 'less than 30 character' : null,
+                          value!.isEmpty ? 'please fill the blank' : null,
                     ),
                     const SizedBox(height: 20),
                     CustomTextFormField(
@@ -142,7 +142,7 @@ class _completProfileState extends State<completProfile> {
                       focusNode: _stateFocus,
                       controller: _stateController,
                       validator: (value) =>
-                          value!.length <= 30 ? 'less than 30 character' : null,
+                          value!.isEmpty ? 'please fill the blankS' : null,
                     ),
                     SizedBox(height: 10),
                     TextButton(
@@ -179,6 +179,7 @@ class _completProfileState extends State<completProfile> {
                             });
                           }
                         }
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Complete',

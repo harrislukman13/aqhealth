@@ -1,5 +1,6 @@
 import 'package:aqhealth/model/doctor.dart';
 import 'package:aqhealth/model/patient.dart';
+import 'package:aqhealth/model/specialist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -43,20 +44,10 @@ class DatabaseController {
   }
 
   //get specialist
-  Future<List<String>> getSpecialist(String id) async {
-    try {
-      DocumentSnapshot<Map<String, dynamic>> data =
-          await _db.collection('Specialist').doc(id).get();
-      List<dynamic> datas = data['specialist_name'];
-      List<String> specialists = [];
-      for (var element in datas) {
-        specialists.add(element.toString());
-      }
-      return specialists;
-    } catch (e) {
-      print('error');
-      return [];
-    }
+  Stream<List<Specialist>> getSpecialist() {
+    return _db.collection('Specialist').snapshots().map((list) => list.docs
+        .map((specialist) => Specialist.fromFireStore(specialist))
+        .toList());
   }
 
   // getdoctor specialist
@@ -70,5 +61,8 @@ class DatabaseController {
     return doctors;
   }
 
-  
+  Stream<List<Patient>> getPatient() {
+    return _db.collection('Patient').snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Patient.fromFireStore(doc, userId: uid)).toList());
+  }
 }

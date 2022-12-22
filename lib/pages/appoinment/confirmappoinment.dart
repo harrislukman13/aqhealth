@@ -1,7 +1,11 @@
+import 'package:aqhealth/model/appoinment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:aqhealth/styles/app_color.dart';
 
 class ConfirmAppoinment extends StatefulWidget {
   const ConfirmAppoinment({Key? key}) : super(key: key);
@@ -12,6 +16,13 @@ class ConfirmAppoinment extends StatefulWidget {
 
 class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
   DateTime? selectedDate;
+  DateTime focusDate = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.twoWeeks;
+
+  int length = 0;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
+  List<Appointment>? booked;
 
   @override
   Widget build(BuildContext context) {
@@ -84,30 +95,36 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
             SizedBox(
               height: 1.h,
             ),
-            TextField(
-              enabled: true,
-              decoration: InputDecoration(
-                  prefixIcon: Icon(Ionicons.calendar_clear_outline)),
-              style: TextStyle(color: Colors.grey),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(
-                    DateTime.now().year + 1,
-                    DateTime.now().month,
-                    DateTime.now().day,
-                  ),
-                );
-
-                if (pickedDate != null) {
+            Container(
+              padding: EdgeInsets.all(1.h),
+              child: TableCalendar(
+                focusedDay: focusDate,
+                firstDay: DateTime.now(),
+                lastDay: DateTime(
+                  DateTime.now().year + 1,
+                  DateTime.now().month,
+                  DateTime.now().day,
+                ),
+                selectedDayPredicate: (day) {
+                  return isSameDay(selectedDate, day);
+                },
+                onDaySelected: (selectedDay, focusedDay) {
                   setState(() {
-                    selectedDate = pickedDate;
+                    selectedDate = selectedDay;
+                    focusDate = focusedDay;
                   });
-                  //updateAvailability();
-                }
-              },
+                },
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  focusDate = focusedDay;
+                },
+              ),
             ),
             SizedBox(
               height: 2.h,
@@ -119,6 +136,62 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                   fontWeight: FontWeight.bold,
                   color: Colors.indigo),
             ),
+            SizedBox(
+              height: 2.h,
+            ),
+            booked == null
+                ? Container(
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    child: SpinKitChasingDots(
+                      color: AppColor.primary,
+                    ),
+                  )
+                : GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 1.5,
+                    ),
+                    itemCount: length + 1,
+                    itemBuilder: ((context, index) {
+                      int start = startTime!.hour + index;
+                      String startString =
+                          TimeOfDay(hour: start, minute: 0).format(context);
+                      int end = start + 1;
+                      String endString =
+                          TimeOfDay(hour: end, minute: 0).format(context);
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(startString + ' -' + endString),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(2.sp),
+                            child: InkWell(
+                              onTap: () {
+                                //addOrRemove(start);
+                              },
+                              child: Card(
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2.sp)),
+                                child: Container(
+                                  height: 5.h,
+                                  width: 5.w,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(2.sp),
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    })),
           ],
         ),
       ),

@@ -2,7 +2,6 @@ import 'package:aqhealth/pages/authentication/login.dart';
 import 'package:aqhealth/pages/authentication/register.dart';
 import 'package:flutter/material.dart';
 
-
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);
 
@@ -13,7 +12,9 @@ class Authenticate extends StatefulWidget {
 class _AuthenticateState extends State<Authenticate> {
   bool showSignIn = true;
   void toggleView() {
-    setState(() => showSignIn = !showSignIn);
+    setState(() {
+      showSignIn = !showSignIn;
+    });
   }
 
   @override

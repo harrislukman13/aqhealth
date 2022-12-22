@@ -1,12 +1,13 @@
 import 'package:aqhealth/pages/appoinment/crerateappoinment.dart';
+import 'package:aqhealth/pages/appoinment/myappoinment/listappointment.dart';
 import 'package:aqhealth/styles/app_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
-
+  const Home({Key? key, required this.data}) : super(key: key);
+  final Map<dynamic, dynamic> data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +38,12 @@ class Home extends StatelessWidget {
                   MenuBox(
                       icon: 'assets/icons/appoinment.ico',
                       label: 'My Appointment',
-                      onTap: () {}),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => MyAppointment()));
+                      }),
                 ]),
             SizedBox(
               height: 5.h,

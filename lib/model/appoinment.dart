@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class Appointment {
   String? id;
+  //@JsonKey(fromJson: AppUtil.timeStampToDateTime, toJson: AppUtil.dateTimeToTimeStamp);
   DateTime? dateStart;
   DateTime? dateEnd;
   String? doctorId;

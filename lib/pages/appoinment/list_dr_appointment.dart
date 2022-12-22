@@ -60,7 +60,7 @@ class _ListdoctorState extends State<Listdoctor> {
           color: Colors.indigo,
           child: SizedBox(
             width: 17.w,
-            height: 16.h,
+            height: 18.h,
             child: Padding(
               padding: EdgeInsets.all(3.w),
               child: Column(

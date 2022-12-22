@@ -7,7 +7,6 @@ import 'package:aqhealth/styles/app_color.dart';
 import 'package:aqhealth/styles/custom_text_field.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:aqhealth/DAO/patientDAO.dart';
 import 'package:sizer/sizer.dart';
 
 class Register extends StatefulWidget {
@@ -37,13 +36,14 @@ class _RegisterState extends State<Register> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        child: Stack(
-          children: [
-            Scaffold(
-              body: Expanded(
+    return Scaffold(
+      body: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(2.h),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -139,23 +139,25 @@ class _RegisterState extends State<Register> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              onTap: () => widget.toggleView),
+                              onTap: () {
+                                widget.toggleView();
+                              }),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            !isLoading
-                ? const SizedBox.shrink()
-                : Container(
-                    color: Colors.white.withOpacity(0.4),
-                    alignment: Alignment.center,
-                    child: SpinKitChasingDots(color: AppColor.primary),
-                  ),
-          ],
-        ),
+            ],
+          ),
+          !isLoading
+              ? const SizedBox.shrink()
+              : Container(
+                  color: Colors.white.withOpacity(0.4),
+                  alignment: Alignment.center,
+                  child: SpinKitChasingDots(color: AppColor.primary),
+                ),
+        ],
       ),
     );
   }
