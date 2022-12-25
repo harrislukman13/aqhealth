@@ -94,7 +94,7 @@ class _UserLoginState extends State<UserLogin> {
                           });
 
                           if (_formKey.currentState!.validate()) {
-                            dynamic result = _auth.singIn(
+                            dynamic result = await _auth.singIn(
                                 _emailController.text.trim(),
                                 _passwordController.text.trim());
 
@@ -146,13 +146,13 @@ class _UserLoginState extends State<UserLogin> {
               ),
             ],
           ),
-          !isLoading
+          /* !isLoading
               ? const SizedBox.shrink()
               : Container(
                   color: Colors.white.withOpacity(0.4),
                   alignment: Alignment.center,
                   child: SpinKitChasingDots(color: AppColor.primary),
-                )
+                )*/
         ],
       ),
     );

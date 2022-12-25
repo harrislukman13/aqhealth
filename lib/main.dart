@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'controller/Authcountroller.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aqhealth/widget/loading.dart';
@@ -26,10 +27,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
-      return const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Wrapper(),
-      );
+      return StreamProvider<UserModel?>.value(
+          value: AuthController().user,
+          initialData: null,
+          child: const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Wrapper(),
+          ));
     });
   }
 }

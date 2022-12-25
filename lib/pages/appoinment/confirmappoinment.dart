@@ -8,8 +8,11 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:aqhealth/styles/app_color.dart';
 
 class ConfirmAppoinment extends StatefulWidget {
-  const ConfirmAppoinment({Key? key}) : super(key: key);
-
+  const ConfirmAppoinment(
+      {Key? key, required this.doctorname, required this.doctorspecialist})
+      : super(key: key);
+  final String doctorname;
+  final String doctorspecialist;
   @override
   State<ConfirmAppoinment> createState() => _ConfirmAppoinmentState();
 }
@@ -63,7 +66,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Dr koh',
+                          widget.doctorname,
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
@@ -73,7 +76,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                         const Padding(
                             padding: EdgeInsets.symmetric(vertical: 2.0)),
                         Text(
-                          "Cardiologist specialist",
+                          widget.doctorspecialist,
                           style: const TextStyle(
                             fontSize: 10.0,
                             color: Colors.black,

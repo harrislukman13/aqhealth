@@ -162,7 +162,7 @@ class _completProfileState extends State<completProfile> {
                         });
 
                         if (_formKey.currentState!.validate()) {
-                          dynamic result = _auth.register(
+                          dynamic result = await _auth.register(
                               widget.email,
                               widget.password,
                               _nameController.text,
@@ -179,7 +179,7 @@ class _completProfileState extends State<completProfile> {
                             });
                           }
                         }
-                        Navigator.pop(context);
+                        //Navigator.pop(context);
                       },
                       child: const Text(
                         'Complete',

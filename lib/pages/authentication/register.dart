@@ -150,13 +150,13 @@ class _RegisterState extends State<Register> {
               ),
             ],
           ),
-          !isLoading
+          /*!isLoading
               ? const SizedBox.shrink()
               : Container(
                   color: Colors.white.withOpacity(0.4),
                   alignment: Alignment.center,
                   child: SpinKitChasingDots(color: AppColor.primary),
-                ),
+                ), */
         ],
       ),
     );

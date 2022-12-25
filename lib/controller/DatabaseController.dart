@@ -51,18 +51,19 @@ class DatabaseController {
   }
 
   // getdoctor specialist
-  Future<Iterable<Doctor>> getDoctor(String specialistId) async {
+  Future<List<Doctor>> getDoctor(String specialistId) async {
     QuerySnapshot<Map<String, dynamic>> data = await _db
         .collection('Doctor')
-        .where('Specialist', isEqualTo: specialistId)
+        .where('specialistid', isEqualTo: specialistId)
         .get();
-    Iterable<Doctor> doctors =
-        data.docs.map((doc) => Doctor.fromFireStore(doc));
+    List<Doctor> doctors =
+        data.docs.map((doc) => Doctor.fromFireStore(doc)).toList();
     return doctors;
   }
 
   Stream<List<Patient>> getPatient() {
-    return _db.collection('Patient').snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Patient.fromFireStore(doc, userId: uid)).toList());
+    return _db.collection('Patient').snapshots().map((snapshot) => snapshot.docs
+        .map((doc) => Patient.fromFireStore(doc, userId: uid))
+        .toList());
   }
 }

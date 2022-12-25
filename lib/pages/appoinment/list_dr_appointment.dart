@@ -1,95 +1,130 @@
+import 'package:aqhealth/controller/DatabaseController.dart';
+import 'package:aqhealth/model/doctor.dart';
 import 'package:aqhealth/pages/appoinment/confirmappoinment.dart';
+import 'package:aqhealth/styles/app_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 
 class Listdoctor extends StatefulWidget {
-  const Listdoctor({Key? key}) : super(key: key);
-
+  const Listdoctor({Key? key, required this.specialistID}) : super(key: key);
+  final String specialistID;
   @override
   State<Listdoctor> createState() => _ListdoctorState();
 }
 
 class _ListdoctorState extends State<Listdoctor> {
   @override
-  List doctor = <String>[
-    'dr Adrian koh',
-    'adrian',
-    'ismail',
-  ];
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Create Appointment"),
-        backgroundColor: Colors.indigo[800],
-        elevation: 0,
-      ),
-      body: Container(
-        padding: EdgeInsets.all(5.w),
-        child: Column(
-          children: [
-            Text(
-              "All specialist",
-              style: TextStyle(color: Colors.indigo),
-              textAlign: TextAlign.start,
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: doctor.length,
-                itemBuilder: (context, position) {
-                  return listappointment(position);
-                },
+    return FutureBuilder(
+        future: DatabaseController.withoutUID().getDoctor(widget.specialistID),
+        builder: (context, AsyncSnapshot<List<Doctor>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            List<Doctor>? doctors = snapshot.data;
+            return Scaffold(
+              appBar: AppBar(
+                title: Text("Create Appointment"),
+                backgroundColor: Colors.indigo[800],
+                elevation: 0,
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+              body: Container(
+                padding: EdgeInsets.all(5.w),
+                child: Column(
+                  children: [
+                    Text(
+                      "All specialist",
+                      style: TextStyle(color: Colors.indigo),
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Expanded(
+                      child: doctors != null
+                          ? ListView.builder(
+                              itemCount: doctors.length,
+                              itemBuilder: (context, int index) {
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) =>
+                                              ConfirmAppoinment(
+                                                doctorname:
+                                                    doctors[index].doctorName,
+                                                doctorspecialist: doctors[index]
+                                                    .specialistname,
+                                              ))),
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    elevation: 5,
+                                    color: Colors.indigo,
+                                    child: SizedBox(
+                                      width: 17.w,
+                                      height: 18.h,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(3.w),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: <Widget>[
+                                                  CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    radius: 50,
+                                                    child: CircleAvatar(
+                                                      backgroundImage: NetworkImage(
+                                                          "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 2.h,
+                                                  ),
+                                                  _DrDescription(
+                                                      name: doctors[index]
+                                                          .doctorName,
+                                                      profesion: doctors[index]
+                                                          .specialistname,
+                                                      desc: doctors[index]
+                                                          .description)
+                                                ]),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              alignment: Alignment.center,
+                              color: Colors.white,
+                              child: SpinKitChasingDots(
+                                color: AppColor.primary,
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Container(
+              alignment: Alignment.center,
+              color: Colors.white,
+              child: SpinKitChasingDots(
+                color: AppColor.primary,
+              ),
+            );
+          }
+        });
   }
-
-  Widget listappointment(int i) => GestureDetector(
-        onTap: () => Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => ConfirmAppoinment())),
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 5,
-          color: Colors.indigo,
-          child: SizedBox(
-            width: 17.w,
-            height: 18.h,
-            child: Padding(
-              padding: EdgeInsets.all(3.w),
-              child: Column(
-                children: [
-                  Row(crossAxisAlignment: CrossAxisAlignment.center,
-                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 50,
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 2.h,
-                        ),
-                        _DrDescription(
-                            name: doctor[i],
-                            profesion: 'cardiology',
-                            desc: 'selalu bercucuk tanam')
-                      ]),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
 }
 
 class _DrDescription extends StatelessWidget {
@@ -111,7 +146,7 @@ class _DrDescription extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            name,
+            "Dr. $name",
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,

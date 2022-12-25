@@ -14,11 +14,12 @@ import 'package:sizer/sizer.dart';
 //import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 
 class Mainpage extends StatefulWidget {
-  const Mainpage({Key? key, required this.data, required this.user})
-      : super(key: key);
+  const Mainpage({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   final Map<dynamic, dynamic> data;
-  final UserModel user;
 
   @override
   State<Mainpage> createState() => _MainpageState();
