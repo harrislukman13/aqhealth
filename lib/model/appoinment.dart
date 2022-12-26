@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class Appointment {
   String? id;
   //@JsonKey(fromJson: AppUtil.timeStampToDateTime, toJson: AppUtil.dateTimeToTimeStamp);
@@ -8,15 +7,14 @@ class Appointment {
   DateTime? dateEnd;
   String? doctorId;
   String? patientID;
-  String? specialistID;
 
-  Appointment(
-      {this.id,
-      this.dateStart,
-      this.dateEnd,
-      this.doctorId,
-      this.patientID,
-      this.specialistID});
+  Appointment({
+    this.id,
+    this.dateStart,
+    this.dateEnd,
+    this.doctorId,
+    this.patientID,
+  });
 
   factory Appointment.fromFireStore(DocumentSnapshot doc) {
     return Appointment(
@@ -25,7 +23,6 @@ class Appointment {
       dateEnd: doc['dateEnd'],
       doctorId: doc['doctorId'],
       patientID: doc['patientId'],
-      specialistID: doc['specialistId'],
     );
   }
 }

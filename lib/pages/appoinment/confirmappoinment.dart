@@ -22,7 +22,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
   DateTime focusDate = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.twoWeeks;
 
-  int length = 0;
+  int length = 7;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
   List<Appointment>? booked;
@@ -31,13 +31,14 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Appointment"),
+        title: const Text("Create Appointment"),
         backgroundColor: Colors.indigo[800],
         elevation: 0,
       ),
       body: Container(
         padding: EdgeInsets.all(3.w),
         child: ListView(
+          shrinkWrap: true,
           scrollDirection: Axis.vertical,
           children: [
             Container(
@@ -151,6 +152,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                     ),
                   )
                 : GridView.builder(
+                    shrinkWrap: true,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
