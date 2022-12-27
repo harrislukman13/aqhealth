@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:aqhealth/model/appoinment.dart';
 import 'package:aqhealth/model/doctor.dart';
 import 'package:aqhealth/model/patient.dart';
 import 'package:aqhealth/model/specialist.dart';
@@ -66,4 +69,45 @@ class DatabaseController {
         .map((doc) => Patient.fromFireStore(doc, userId: uid))
         .toList());
   }
+
+  Future<List<Appointment>> getAvailability(
+      String doctorid, String date, String time) async {
+    QuerySnapshot<Map<String, dynamic>> data = await _db
+        .collection('Appointment')
+        .where('doctorid', isEqualTo: doctorid)
+        .where('date', isEqualTo: date)
+        .where('time', isEqualTo: time)
+        .get();
+    List<Appointment> appointmets =
+        data.docs.map((doc) => Appointment.fromFireStore(doc)).toList();
+    return appointmets;
+  }
+
+  Future<List<Appointment>> getAppointment(String uid) async {
+    QuerySnapshot<Map<String, dynamic>> data = await _db
+        .collection('Appointment')
+        .where('patientid', isEqualTo: uid)
+        .get();
+    List<Appointment> appointments =
+        data.docs.map((doc) => Appointment.fromFireStore(doc)).toList();
+    return appointments;
+  }
+
+  Future<bool> createAppointment(
+    Appointment a,
+  ) async {
+    try {
+      await _db.collection('Appointment').doc().set({
+        "doctorid": a.doctorId,
+        "datestart": a.dateStart,
+        "dateend": a.dateEnd,
+        "patientid": a.patientID,
+      });
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
 }
