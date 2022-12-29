@@ -71,12 +71,11 @@ class DatabaseController {
   }
 
   Future<List<Appointment>> getAvailability(
-      String doctorid, String date, String time) async {
+      String doctorid, String date) async {
     QuerySnapshot<Map<String, dynamic>> data = await _db
         .collection('Appointment')
         .where('doctorid', isEqualTo: doctorid)
         .where('date', isEqualTo: date)
-        .where('time', isEqualTo: time)
         .get();
     List<Appointment> appointmets =
         data.docs.map((doc) => Appointment.fromFireStore(doc)).toList();
@@ -99,8 +98,8 @@ class DatabaseController {
     try {
       await _db.collection('Appointment').doc().set({
         "doctorid": a.doctorId,
-        "datestart": a.dateStart,
-        "dateend": a.dateEnd,
+        "bookdate": a.bookdate,
+        "time": a.time,
         "patientid": a.patientID,
       });
       return true;
@@ -109,5 +108,4 @@ class DatabaseController {
       return false;
     }
   }
-
 }

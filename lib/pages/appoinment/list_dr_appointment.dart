@@ -51,10 +51,7 @@ class _ListdoctorState extends State<Listdoctor> {
                                       CupertinoPageRoute(
                                           builder: (context) =>
                                               ConfirmAppoinment(
-                                                doctorname:
-                                                    doctors[index].doctorName,
-                                                doctorspecialist: doctors[index]
-                                                    .specialistname,
+                                                    doctor: doctors[index],
                                               ))),
                                   child: Card(
                                     shape: RoundedRectangleBorder(

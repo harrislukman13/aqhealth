@@ -1,26 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Appointment {
-  String? id;
-  //@JsonKey(fromJson: AppUtil.timeStampToDateTime, toJson: AppUtil.dateTimeToTimeStamp);
-  DateTime? dateStart;
-  DateTime? dateEnd;
+  DateTime? bookdate;
+  int? time;
   String? doctorId;
   String? patientID;
 
   Appointment({
-    this.id,
-    this.dateStart,
-    this.dateEnd,
+    this.bookdate,
+    this.time,
     this.doctorId,
     this.patientID,
   });
 
   factory Appointment.fromFireStore(DocumentSnapshot doc) {
     return Appointment(
-      id: doc['id'],
-      dateStart: doc['dateStart'],
-      dateEnd: doc['dateEnd'],
+      bookdate: doc['bookdate'],
+      time: doc['time'],
       doctorId: doc['doctorId'],
       patientID: doc['patientId'],
     );
