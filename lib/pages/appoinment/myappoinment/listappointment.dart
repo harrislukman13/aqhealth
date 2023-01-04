@@ -62,7 +62,7 @@ class _MyAppointmentState extends State<MyAppointment> {
                       ),
                       child: Center(
                           child: Text(
-                        "History",
+                        "Appointment",
                         style: TextStyle(
                             fontSize: 16,
                             color: _ispress ? Colors.grey : Colors.white,
@@ -71,8 +71,8 @@ class _MyAppointmentState extends State<MyAppointment> {
                 ),
                 onTap: () {
                   setState(() {
-                    selectedpage = Menu.history;
-                    _pageController.jumpToPage(1);
+                    selectedpage = Menu.appointment;
+                    _pageController.jumpToPage(0);
                     _ispress = !_ispress;
                   });
                 },
@@ -89,7 +89,7 @@ class _MyAppointmentState extends State<MyAppointment> {
                               right: Radius.circular(20))),
                       child: Center(
                         child: Text(
-                          "Appointment",
+                          "History",
                           style: TextStyle(
                               color: _ispress ? Colors.white : Colors.grey,
                               fontWeight: FontWeight.bold),
@@ -98,8 +98,8 @@ class _MyAppointmentState extends State<MyAppointment> {
                 ),
                 onTap: () {
                   setState(() {
-                    selectedpage = Menu.appointment;
-                    _pageController.jumpToPage(0);
+                    selectedpage = Menu.history;
+                    _pageController.jumpToPage(1);
                     _ispress = !_ispress;
                   });
                 },
