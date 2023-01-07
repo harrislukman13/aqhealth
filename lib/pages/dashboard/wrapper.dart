@@ -32,6 +32,7 @@ class _WrapperState extends State<Wrapper> {
               if (data['role'] == 'Patient' || data['role'] == 'patient') {
                 return Mainpage(
                   data: data,
+                  user: user,
                 );
               }
             }

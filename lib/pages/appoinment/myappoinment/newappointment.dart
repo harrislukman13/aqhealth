@@ -1,10 +1,12 @@
+import 'package:aqhealth/model/appoinment.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class NewAppointment extends StatefulWidget {
-  const NewAppointment({Key? key}) : super(key: key);
+  const NewAppointment({Key? key, this.appointment}) : super(key: key);
 
+  final List<Appointment>? appointment;
   @override
   State<NewAppointment> createState() => _NewAppointmentState();
 }
@@ -13,82 +15,88 @@ class _NewAppointmentState extends State<NewAppointment> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(2.h),
-      child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              clipBehavior: Clip.antiAlias,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              elevation: 3,
-              color: Colors.indigo,
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                          "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
-                    ),
-                    title: Text(
-                      "Dr Dannea",
-                      style: TextStyle(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    subtitle: Text(
-                      "Cardiology Specialist",
-                      style: TextStyle(fontSize: 10.sp, color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(2.h),
-                    child: Container(
-                      height: 4.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.indigo[200]),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Date"),
-                            Text("Time"),
-                          ],
+        padding: EdgeInsets.all(2.h),
+        child: widget.appointment != null
+            ? ListView.builder(
+                itemCount: widget.appointment?.length,
+                itemBuilder: (context, int index) {
+                  return Card(
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    elevation: 3,
+                    color: Colors.indigo,
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 20,
+                            backgroundImage: NetworkImage(
+                                "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                          ),
+                          title: Text(
+                            "Dr Dannea",
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            "Cardiology Specialist",
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
+                          ),
                         ),
-                      ),
+                        Padding(
+                          padding: EdgeInsets.all(2.h),
+                          child: Container(
+                            height: 4.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: Colors.indigo[200]),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(widget.appointment?[index].bookdate ??
+                                      ""),
+                                  Text(widget.appointment?[index].time
+                                          .toString() ??
+                                      ":00")
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        ButtonBar(
+                          alignment: MainAxisAlignment.start,
+                          children: [
+                            QrImage(
+                              data: "1234567890",
+                              version: QrVersions.auto,
+                              size: 70.0,
+                              dataModuleStyle: QrDataModuleStyle(
+                                  dataModuleShape: QrDataModuleShape.square,
+                                  color: Colors.white),
+                            ),
+                            TextButton(
+                                style: TextButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    textStyle: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
+                                onPressed: (() {}),
+                                child: const Text("Status")),
+                          ],
+                        )
+                      ],
                     ),
-                  ),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.start,
-                    children: [
-                      QrImage(
-                        data: "1234567890",
-                        version: QrVersions.auto,
-                        size: 70.0,
-                        dataModuleStyle: QrDataModuleStyle(
-                            dataModuleShape: QrDataModuleShape.square,
-                            color: Colors.white),
-                      ),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              textStyle: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                          onPressed: (() {}),
-                          child: const Text("Status")),
-                    ],
-                  )
-                ],
-              ),
-            );
-          }),
-    );
+                  );
+                })
+            : Container());
   }
 }

@@ -17,9 +17,11 @@ class Mainpage extends StatefulWidget {
   const Mainpage({
     Key? key,
     required this.data,
+    required this.user,
   }) : super(key: key);
 
   final Map<dynamic, dynamic> data;
+  final UserModel user;
 
   @override
   State<Mainpage> createState() => _MainpageState();
@@ -111,7 +113,10 @@ class _MainpageState extends State<Mainpage> {
 
   Widget getBody() {
     List<Widget> pages = [
-      Home(data: widget.data),
+      Home(
+        data: widget.data,
+        user: widget.user,
+      ),
       Queue(),
       Profile(
         data: widget.data,

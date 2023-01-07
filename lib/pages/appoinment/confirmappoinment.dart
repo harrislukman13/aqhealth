@@ -20,24 +20,22 @@ class ConfirmAppoinment extends StatefulWidget {
 }
 
 class Prebook {
-  String doctorid;
   DateTime date;
   int time;
 
   Prebook({
-    required this.doctorid,
     required this.date,
     required this.time,
   });
 
   toMap() => {
-        'doctorid': doctorid,
         'book_date': DateFormat('yyyy-MM-dd').format(date),
         'time': time,
       };
 }
 
 class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
+  String? _selectedDate;
   DateTime? selectedDate;
   DateTime focusDate = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.twoWeeks;
@@ -149,6 +147,8 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                 onDaySelected: (selectedDay, focusedDay) {
                   setState(() {
                     selectedDate = selectedDay;
+                    _selectedDate =
+                        DateFormat('yyyy-MM-dd').format(selectedDate!);
                     focusDate = focusedDay;
                   });
                 },
@@ -167,6 +167,18 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
             SizedBox(
               height: 2.h,
             ),
+            Container(
+              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 0),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.indigo),
+                  onPressed: () async {
+                    _booked = await db.getAvailability();
+                    print(_booked);
+                  },
+                  child: Text('Check Time')),
+            ),
             Text(
               'Time',
               style: TextStyle(
@@ -177,64 +189,67 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
             SizedBox(
               height: 2.h,
             ),
-            GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1.5,
-                ),
-                itemCount: length + 1,
-                itemBuilder: ((context, index) {
-                  int start = startTime!.hour + index;
-                  String startString =
-                      TimeOfDay(hour: start, minute: 0).format(context);
-                  int end = start + 1;
-                  String endString =
-                      TimeOfDay(hour: end, minute: 0).format(context);
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(startString + ' -' + endString),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(2.sp),
-                        child: InkWell(
-                          onTap: () async {
-                            _booked = await db.getAvailability(widget.doctor.id,
-                                DateFormat('yyyy-MM-dd').format(selectedDate!));
-                            addOrRemove(start);
-                            time = start;
-                          },
-                          child: Card(
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.sp)),
-                            child: Container(
-                              height: 5.h,
-                              width: 5.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2.sp),
-                                color: checkIfSelected(start)
-                                    ? Colors.green
-                                    : checkIfBooked(start)
-                                        ? Colors.red
-                                        : Colors.white,
+            _booked != null
+                ? GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 1.5,
+                    ),
+                    itemCount: length + 1,
+                    itemBuilder: ((context, index) {
+                      int start = startTime!.hour + index;
+                      String startString =
+                          TimeOfDay(hour: start, minute: 0).format(context);
+                      int end = start + 1;
+                      String endString =
+                          TimeOfDay(hour: end, minute: 0).format(context);
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(startString + ' -' + endString),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(2.sp),
+                            child: InkWell(
+                              onTap: () async {
+                                time = start;
+                                addOrRemove(start);
+                              },
+                              child: Card(
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2.sp)),
+                                child: Container(
+                                  height: 5.h,
+                                  width: 5.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2.sp),
+                                    color: checkIfSelected(start)
+                                        ? Colors.green
+                                        : checkIfBooked(start)
+                                            ? Colors.red
+                                            : Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  );
-                })),
+                        ],
+                      );
+                    }))
+                : SizedBox.shrink(),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.indigo),
                 onPressed: () async {
                   await db.createAppointment(Appointment(
-                      doctorId: widget.doctor.id,
-                      bookdate: selectedDate,
+                      bookdate: _selectedDate,
                       time: time,
                       patientID: user.uid));
 
@@ -258,7 +273,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
 
   checkIfBooked(int start) {
     for (int i = 0; i < _booked.length; i++) {
-      if (_booked[i].time == start) {
+      if (_booked[i].time == start && _booked[i].bookdate == _selectedDate) {
         return true;
       }
     }
@@ -278,7 +293,6 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
 
       setState(() {
         selected.add(Prebook(
-          doctorid: widget.doctor.id,
           date: selectedDate!,
           time: start,
         ));

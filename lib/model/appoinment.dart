@@ -1,24 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Appointment {
-  DateTime? bookdate;
+  String? bookdate;
   int? time;
-  String? doctorId;
+  String? doctorname;
   String? patientID;
 
   Appointment({
     this.bookdate,
+    this.doctorname,
     this.time,
-    this.doctorId,
     this.patientID,
   });
 
   factory Appointment.fromFireStore(DocumentSnapshot doc) {
     return Appointment(
       bookdate: doc['bookdate'],
+      doctorname: doc['doctorname'],
       time: doc['time'],
-      doctorId: doc['doctorId'],
-      patientID: doc['patientId'],
+      patientID: doc['patientid'],
     );
   }
 }

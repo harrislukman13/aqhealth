@@ -70,13 +70,9 @@ class DatabaseController {
         .toList());
   }
 
-  Future<List<Appointment>> getAvailability(
-      String doctorid, String date) async {
-    QuerySnapshot<Map<String, dynamic>> data = await _db
-        .collection('Appointment')
-        .where('doctorid', isEqualTo: doctorid)
-        .where('date', isEqualTo: date)
-        .get();
+  Future<List<Appointment>> getAvailability() async {
+    QuerySnapshot<Map<String, dynamic>> data =
+        await _db.collection('Appointment').get();
     List<Appointment> appointmets =
         data.docs.map((doc) => Appointment.fromFireStore(doc)).toList();
     return appointmets;
@@ -97,7 +93,7 @@ class DatabaseController {
   ) async {
     try {
       await _db.collection('Appointment').doc().set({
-        "doctorid": a.doctorId,
+        "doctorname": a.doctorname,
         "bookdate": a.bookdate,
         "time": a.time,
         "patientid": a.patientID,

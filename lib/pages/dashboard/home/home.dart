@@ -1,131 +1,188 @@
+import 'package:aqhealth/controller/DatabaseController.dart';
+import 'package:aqhealth/model/appoinment.dart';
+import 'package:aqhealth/model/patient.dart';
 import 'package:aqhealth/pages/appoinment/crerateappoinment.dart';
 import 'package:aqhealth/pages/appoinment/myappoinment/listappointment.dart';
 import 'package:aqhealth/styles/app_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class Home extends StatelessWidget {
-  const Home({Key? key, required this.data}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key, required this.data, required this.user})
+      : super(key: key);
+
   final Map<dynamic, dynamic> data;
+  final UserModel user;
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(3.w),
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            SizedBox(
-              height: 5.h,
-              width: 5.w,
-            ),
-            GridView(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                ),
-                children: [
-                  MenuBox(
-                      icon: 'assets/icons/appoinment.ico',
-                      label: 'Make Appoinment',
-                      onTap: () => Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => CreateAppointment()))),
-                  MenuBox(
-                      icon: 'assets/icons/appoinment.ico',
-                      label: 'My Appointment',
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => MyAppointment()));
-                      }),
-                ]),
-            SizedBox(
-              height: 5.h,
-            ),
-            const Text(
-              "Appoinment Today",
-              style: TextStyle(color: Colors.indigo),
-              textAlign: TextAlign.start,
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Card(
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              color: AppColor.primary,
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 20,
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 4.w,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Dr Dannea",
-                                style: TextStyle(
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                              Text(
-                                "Cardiology Specialist",
-                                style: TextStyle(
-                                    fontSize: 10.sp, color: Colors.white),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Container(
-                          color: Colors.indigo[200],
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text("Monday"),
-                              Text("22/7/2023"),
-                            ],
-                          ),
+    return FutureBuilder(
+        future: DatabaseController.withoutUID().getAppointment(widget.user.uid),
+        builder: (context, AsyncSnapshot<List<Appointment>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            List<Appointment>? appointment = snapshot.data;
+            return Scaffold(
+              body: Container(
+                padding: EdgeInsets.all(3.w),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 5.h,
+                      width: 5.w,
+                    ),
+                    GridView(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 15,
                         ),
-                      )
-                    ],
-                  )),
-            )
-          ],
-        ),
-      ),
-    );
+                        children: [
+                          MenuBox(
+                              icon: 'assets/icons/appoinment.ico',
+                              label: 'Make Appoinment',
+                              onTap: () => Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) =>
+                                          CreateAppointment()))),
+                          MenuBox(
+                              icon: 'assets/icons/appoinment.ico',
+                              label: 'My Appointment',
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) => MyAppointment(
+                                              appointment: appointment,
+                                            )));
+                              }),
+                        ]),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    const Text(
+                      "Appoinment Today",
+                      style: TextStyle(color: Colors.indigo),
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    appointment != null
+                        ? Expanded(
+                            child: ListView.builder(
+                              itemCount: appointment.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  elevation: 5.0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  color: AppColor.primary,
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              CircleAvatar(
+                                                backgroundColor: Colors.white,
+                                                radius: 20,
+                                                child: CircleAvatar(
+                                                  backgroundImage: NetworkImage(
+                                                      "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 4.w,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    appointment[index]
+                                                        .patientID!,
+                                                    style: TextStyle(
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    "Cardiology Specialist",
+                                                    style: TextStyle(
+                                                        fontSize: 10.sp,
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Container(
+                                              color: Colors.indigo[200],
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 15),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(appointment[index]
+                                                      .bookdate!),
+                                                  Text(appointment[index]
+                                                          .time
+                                                          .toString() +
+                                                      ":00")
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )),
+                                );
+                              },
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Container(
+              alignment: Alignment.center,
+              color: Colors.white,
+              child: SpinKitChasingDots(
+                color: AppColor.primary,
+              ),
+            );
+          }
+        });
   }
 }
 

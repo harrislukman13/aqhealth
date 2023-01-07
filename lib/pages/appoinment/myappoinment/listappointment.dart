@@ -1,10 +1,13 @@
+import 'package:aqhealth/model/appoinment.dart';
 import 'package:aqhealth/pages/appoinment/myappoinment/history.dart';
 import 'package:aqhealth/pages/appoinment/myappoinment/newappointment.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class MyAppointment extends StatefulWidget {
-  const MyAppointment({Key? key}) : super(key: key);
+  const MyAppointment({Key? key, this.appointment}) : super(key: key);
+
+  final List<Appointment>? appointment;
 
   @override
   State<MyAppointment> createState() => _MyAppointmentState();
@@ -113,7 +116,9 @@ class _MyAppointmentState extends State<MyAppointment> {
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                NewAppointment(),
+                NewAppointment(
+                  appointment: widget.appointment,
+                ),
                 History(),
               ],
             ),
