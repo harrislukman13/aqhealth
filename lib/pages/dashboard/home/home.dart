@@ -31,11 +31,43 @@ class _HomeState extends State<Home> {
             List<Appointment>? appointment = snapshot.data;
             return Scaffold(
               body: Container(
-                padding: EdgeInsets.all(3.w),
+                padding: EdgeInsets.all(5.w),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 5.h,
+                      height: 2.h,
+                      width: 5.w,
+                    ),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'AQHEALTH',
+                            style: TextStyle(
+                                color: Colors.indigo,
+                                fontSize: 30.sp,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'Hello',
+                            style: TextStyle(
+                                color: Colors.indigo, fontSize: 15.sp),
+                          ),
+                          SizedBox(
+                            width: 3.w,
+                          ),
+                          Text(
+                            widget.data['name'],
+                            style: TextStyle(
+                                color: Colors.indigo,
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ]),
+                    SizedBox(
+                      height: 2.h,
                       width: 5.w,
                     ),
                     GridView(
@@ -53,8 +85,9 @@ class _HomeState extends State<Home> {
                               onTap: () => Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (context) =>
-                                          CreateAppointment()))),
+                                      builder: (context) => CreateAppointment(
+                                            data: widget.data,
+                                          )))),
                           MenuBox(
                               icon: 'assets/icons/appoinment.ico',
                               label: 'My Appointment',
@@ -81,89 +114,97 @@ class _HomeState extends State<Home> {
                     appointment != null
                         ? Expanded(
                             child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
                               itemCount: appointment.length,
                               itemBuilder: (context, index) {
-                                return Card(
-                                  elevation: 5.0,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  color: AppColor.primary,
-                                  child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              CircleAvatar(
-                                                backgroundColor: Colors.white,
-                                                radius: 20,
-                                                child: CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                      "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                                return SizedBox(
+                                  height: 10,
+                                  child: Card(
+                                    elevation: 5.0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    color: AppColor.primary,
+                                    child: Container(
+                                        width: 90.w,
+                                        height: 50.h,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 10),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                CircleAvatar(
+                                                  backgroundColor: Colors.white,
+                                                  radius: 20,
+                                                  child: CircleAvatar(
+                                                    backgroundImage: NetworkImage(
+                                                        "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 5.w,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      appointment[index]
+                                                          .doctorname!,
+                                                      style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white),
+                                                    ),
+                                                    Text(
+                                                      appointment[index]
+                                                          .specialistname!,
+                                                      style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Container(
+                                                color: Colors.indigo[200],
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 15,
+                                                    vertical: 15),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text(appointment[index]
+                                                        .bookdate!),
+                                                    Text(appointment[index]
+                                                            .time
+                                                            .toString() +
+                                                        ":00")
+                                                  ],
                                                 ),
                                               ),
-                                              SizedBox(
-                                                width: 4.w,
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    appointment[index]
-                                                        .patientID!,
-                                                    style: TextStyle(
-                                                        fontSize: 10.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  ),
-                                                  Text(
-                                                    "Cardiology Specialist",
-                                                    style: TextStyle(
-                                                        fontSize: 10.sp,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Container(
-                                              color: Colors.indigo[200],
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 15, vertical: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Text(appointment[index]
-                                                      .bookdate!),
-                                                  Text(appointment[index]
-                                                          .time
-                                                          .toString() +
-                                                      ":00")
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      )),
+                                            )
+                                          ],
+                                        )),
+                                  ),
                                 );
                               },
                             ),

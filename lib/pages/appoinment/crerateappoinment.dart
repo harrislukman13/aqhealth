@@ -9,8 +9,8 @@ import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
 
 class CreateAppointment extends StatefulWidget {
-  const CreateAppointment({Key? key}) : super(key: key);
-
+  const CreateAppointment({Key? key,required this.data}) : super(key: key);
+  final Map<dynamic, dynamic> data;
   @override
   State<CreateAppointment> createState() => _CreateAppointmentState();
 }
@@ -57,8 +57,12 @@ class _CreateAppointmentState extends State<CreateAppointment> {
                                       context,
                                       CupertinoPageRoute(
                                           builder: (context) => Listdoctor(
-                                                specialistID: specialist[index]
-                                                    .id,
+                                            data: widget.data,
+                                                specialistID:
+                                                    specialist[index].id,
+                                                specialistName:
+                                                    specialist[index]
+                                                        .specialistname,
                                               ))),
                                 ),
                               );

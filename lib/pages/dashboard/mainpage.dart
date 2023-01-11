@@ -28,7 +28,7 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
-  final AuthController _auth = AuthController();
+ 
 
   int _currentIndex = 0;
 
@@ -37,8 +37,6 @@ class _MainpageState extends State<Mainpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: SideMenu(),
-        appBar: _buildAppBar(),
         body: getBody(),
         bottomNavigationBar: _buildBottomBar());
   }
@@ -128,46 +126,5 @@ class _MainpageState extends State<Mainpage> {
     );
   }
 
-  Drawer SideMenu() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: CircleAvatar(
-              radius: 65,
-              backgroundColor: AppColor.primary,
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Home'),
-            onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('QR code'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Profile'),
-            onTap: () => {
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => Profile(
-                            data: widget.data,
-                          )))
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () => {_auth.signOut()},
-          ),
-        ],
-      ),
-    );
-  }
+  
 }

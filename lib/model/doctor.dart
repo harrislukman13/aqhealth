@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Doctor {
-  
+  String doctorID;
   String doctorName;
   String specialistId;
   String description;
@@ -10,7 +10,7 @@ class Doctor {
   int endTime;
 
   Doctor(
-      {
+      {required this.doctorID,
       required this.doctorName,
       required this.specialistId,
       required this.description,
@@ -20,7 +20,7 @@ class Doctor {
 
   factory Doctor.fromFireStore(DocumentSnapshot doc) {
     return Doctor(
-        
+        doctorID: doc['id'],
         doctorName: doc['doctorname'],
         specialistId: doc['specialistid'],
         specialistname: doc['specialistname'],

@@ -8,8 +8,15 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 
 class Listdoctor extends StatefulWidget {
-  const Listdoctor({Key? key, required this.specialistID}) : super(key: key);
+  const Listdoctor(
+      {Key? key,
+      required this.specialistID,
+      required this.specialistName,
+      required this.data})
+      : super(key: key);
   final String specialistID;
+  final String specialistName;
+  final Map<dynamic, dynamic> data;
   @override
   State<Listdoctor> createState() => _ListdoctorState();
 }
@@ -51,7 +58,8 @@ class _ListdoctorState extends State<Listdoctor> {
                                       CupertinoPageRoute(
                                           builder: (context) =>
                                               ConfirmAppoinment(
-                                                    doctor: doctors[index],
+                                                data: widget.data,
+                                                doctor: doctors[index],
                                               ))),
                                   child: Card(
                                     shape: RoundedRectangleBorder(

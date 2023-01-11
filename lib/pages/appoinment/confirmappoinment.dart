@@ -2,6 +2,7 @@ import 'package:aqhealth/controller/DatabaseController.dart';
 import 'package:aqhealth/model/appoinment.dart';
 import 'package:aqhealth/model/doctor.dart';
 import 'package:aqhealth/model/patient.dart';
+import 'package:aqhealth/pages/dashboard/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ionicons/ionicons.dart';
@@ -12,9 +13,11 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:aqhealth/styles/app_color.dart';
 
 class ConfirmAppoinment extends StatefulWidget {
-  const ConfirmAppoinment({Key? key, required this.doctor}) : super(key: key);
+  const ConfirmAppoinment({Key? key, required this.doctor, required this.data})
+      : super(key: key);
 
   final Doctor doctor;
+  final Map<dynamic, dynamic> data;
   @override
   State<ConfirmAppoinment> createState() => _ConfirmAppoinmentState();
 }
@@ -249,11 +252,21 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                     backgroundColor: Colors.indigo),
                 onPressed: () async {
                   await db.createAppointment(Appointment(
+                      doctorid: widget.doctor.doctorID,
+                      doctorname: widget.doctor.doctorName,
+                      specialistname: widget.doctor.specialistname,
+                      patientname: widget.data['name'],
                       bookdate: _selectedDate,
                       time: time,
                       patientID: user.uid));
 
-                  Navigator.pop(context);
+                  Future.delayed(Duration(seconds: 3));
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) =>
+                              Home(data: widget.data, user: user))));
                 },
                 child: const Text("Submit")),
           ],

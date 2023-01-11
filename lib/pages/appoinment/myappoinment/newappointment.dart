@@ -36,14 +36,14 @@ class _NewAppointmentState extends State<NewAppointment> {
                                 "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
                           ),
                           title: Text(
-                            "Dr Dannea",
+                            widget.appointment![index].doctorname!,
                             style: TextStyle(
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
                           subtitle: Text(
-                            "Cardiology Specialist",
+                            widget.appointment![index].specialistname!,
                             style:
                                 TextStyle(fontSize: 10.sp, color: Colors.white),
                           ),
@@ -61,10 +61,9 @@ class _NewAppointmentState extends State<NewAppointment> {
                                     MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(widget.appointment?[index].bookdate ??
-                                      ""),
-                                  Text(widget.appointment?[index].time
-                                          .toString() ??
+                                  Text(widget.appointment![index].bookdate!),
+                                  Text(widget.appointment![index].time!
+                                          .toString() +
                                       ":00")
                                 ],
                               ),
@@ -75,7 +74,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                           alignment: MainAxisAlignment.start,
                           children: [
                             QrImage(
-                              data: "1234567890",
+                              data: widget.appointment?[index].patientID ?? '',
                               version: QrVersions.auto,
                               size: 70.0,
                               dataModuleStyle: QrDataModuleStyle(

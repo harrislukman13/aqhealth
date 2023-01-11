@@ -1,3 +1,6 @@
+import 'package:aqhealth/controller/Authcountroller.dart';
+import 'package:aqhealth/styles/app_color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -10,10 +13,12 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final AuthController _auth = AuthController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      drawer: SideMenu(),
       appBar: AppBar(
         title: const Text("Profile"),
         backgroundColor: Colors.indigo[800],
@@ -162,17 +167,53 @@ class _ProfileState extends State<Profile> {
                           color: Colors.black),
                     ),
                     //name
-                    Text("Haris Lukman",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
-                    //ic
-                    Text("000121112",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
                   ],
                 ),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Drawer SideMenu() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: CircleAvatar(
+              radius: 65,
+              backgroundColor: AppColor.primary,
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.input),
+            title: Text('Home'),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: Text('QR code'),
+            onTap: () => {Navigator.of(context).pop()},
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Setting'),
+            onTap: () => {
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => Profile(
+                            data: widget.data,
+                          )))
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () => {_auth.signOut()},
           ),
         ],
       ),

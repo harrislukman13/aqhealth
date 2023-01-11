@@ -97,6 +97,9 @@ class DatabaseController {
         "bookdate": a.bookdate,
         "time": a.time,
         "patientid": a.patientID,
+        "patientname": a.patientname,
+        "doctorid": a.doctorid,
+        "specialistname": a.specialistname,
       });
       return true;
     } catch (e) {
