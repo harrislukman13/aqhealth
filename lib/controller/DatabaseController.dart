@@ -88,6 +88,14 @@ class DatabaseController {
     return appointments;
   }
 
+  Future getSingleAppointment(String appointmentid) async {
+    var data = await _db.collection('Appointment').doc(appointmentid).get();
+    if (data.exists) {
+      Map<String, dynamic>? appointment = data.data();
+      return appointment;
+    }
+  }
+
   Future<bool> createAppointment(
     Appointment a,
   ) async {

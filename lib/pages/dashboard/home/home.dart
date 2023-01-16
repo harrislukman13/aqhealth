@@ -127,7 +127,7 @@ class _HomeState extends State<Home> {
                                     color: AppColor.primary,
                                     child: Container(
                                         width: 90.w,
-                                        height: 50.h,
+                                        height: 100.h,
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 10),
                                         child: Column(
@@ -210,6 +210,9 @@ class _HomeState extends State<Home> {
                             ),
                           )
                         : Container(),
+                    Container(
+                      height: 15.h,
+                    ),
                   ],
                 ),
               ),

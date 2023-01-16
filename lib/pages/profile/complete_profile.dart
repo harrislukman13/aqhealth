@@ -179,7 +179,10 @@ class _completProfileState extends State<completProfile> {
                             });
                           }
                         }
-                        //Navigator.pop(context);
+                        Future.delayed(
+                          const Duration(seconds: 3),
+                        );
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Complete',

@@ -28,17 +28,13 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
- 
-
   int _currentIndex = 0;
 
   final _inactiveColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: getBody(),
-        bottomNavigationBar: _buildBottomBar());
+    return Scaffold(body: getBody(), bottomNavigationBar: _buildBottomBar());
   }
 
   //appbar widget////
@@ -115,7 +111,10 @@ class _MainpageState extends State<Mainpage> {
         data: widget.data,
         user: widget.user,
       ),
-      Queue(),
+      Queue(
+        user: widget.user,
+        data: widget.data,
+      ),
       Profile(
         data: widget.data,
       ),
@@ -125,6 +124,4 @@ class _MainpageState extends State<Mainpage> {
       children: pages,
     );
   }
-
-  
 }
