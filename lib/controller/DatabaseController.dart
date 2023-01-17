@@ -96,11 +96,32 @@ class DatabaseController {
     }
   }
 
+  Future<List<Appointment>> getLatestApointment() async {
+    QuerySnapshot<Map<String, dynamic>> data = await _db
+        .collection('Appointment')
+        .where('status', isEqualTo: 'success')
+        .get();
+    List<Appointment> appointments =
+        data.docs.map((doc) => Appointment.fromFireStore(doc)).toList();
+    return appointments;
+  }
+
+  Future<List<Appointment>> getHistoryApointment() async {
+    QuerySnapshot<Map<String, dynamic>> data = await _db
+        .collection('Appointment')
+        .where('status', isEqualTo: 'completed')
+        .get();
+    List<Appointment> appointments =
+        data.docs.map((doc) => Appointment.fromFireStore(doc)).toList();
+    return appointments;
+  }
+
   Future<bool> createAppointment(
     Appointment a,
   ) async {
     try {
-      await _db.collection('Appointment').doc().set({
+      await _db.collection('Appointment').doc(a.appointmentid).set({
+        "appointmentid": a.appointmentid,
         "doctorname": a.doctorname,
         "bookdate": a.bookdate,
         "time": a.time,
@@ -108,6 +129,7 @@ class DatabaseController {
         "patientname": a.patientname,
         "doctorid": a.doctorid,
         "specialistname": a.specialistname,
+        "status": a.status
       });
       return true;
     } catch (e) {

@@ -1,3 +1,4 @@
+import 'package:aqhealth/controller/DatabaseController.dart';
 import 'package:aqhealth/model/appoinment.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -12,7 +13,6 @@ class NewAppointment extends StatefulWidget {
 }
 
 class _NewAppointmentState extends State<NewAppointment> {
-  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,7 +75,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                           alignment: MainAxisAlignment.start,
                           children: [
                             QrImage(
-                              data: widget.appointment?[index].patientID ?? '',
+                              data: widget.appointment![index].patientID ?? '',
                               version: QrVersions.auto,
                               size: 70.0,
                               dataModuleStyle: QrDataModuleStyle(
@@ -90,7 +90,8 @@ class _NewAppointmentState extends State<NewAppointment> {
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold)),
                                 onPressed: (() {}),
-                                child: const Text("Status")),
+                                child:
+                                    Text(widget.appointment![index].status!)),
                           ],
                         )
                       ],

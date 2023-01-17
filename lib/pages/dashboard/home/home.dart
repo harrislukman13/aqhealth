@@ -24,8 +24,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final db = DatabaseController(uid: widget.user.uid);
     return FutureBuilder(
-        future: DatabaseController.withoutUID().getAppointment(widget.user.uid),
+        future: DatabaseController.withoutUID().getLatestApointment(),
         builder: (context, AsyncSnapshot<List<Appointment>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             List<Appointment>? appointment = snapshot.data;
@@ -87,6 +88,7 @@ class _HomeState extends State<Home> {
                                   CupertinoPageRoute(
                                       builder: (context) => CreateAppointment(
                                             data: widget.data,
+                                            db: db,
                                           )))),
                           MenuBox(
                               icon: 'assets/icons/appoinment.ico',

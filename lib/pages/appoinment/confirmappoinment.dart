@@ -13,11 +13,13 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:aqhealth/styles/app_color.dart';
 
 class ConfirmAppoinment extends StatefulWidget {
-  const ConfirmAppoinment({Key? key, required this.doctor, required this.data})
+  const ConfirmAppoinment(
+      {Key? key, required this.doctor, required this.data, required this.db})
       : super(key: key);
 
   final Doctor doctor;
   final Map<dynamic, dynamic> data;
+  final DatabaseController db;
   @override
   State<ConfirmAppoinment> createState() => _ConfirmAppoinmentState();
 }
@@ -42,10 +44,11 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
   DateTime? selectedDate;
   DateTime focusDate = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.twoWeeks;
-  bool isGettingAvailability = true;
+  bool isGettingAvailability = false;
   int length = 0;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
+  TimeOfDay? pauseTime;
   int? time;
   List<Appointment> _booked = [];
   List<Prebook> selected = [];
@@ -57,8 +60,10 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
     startTime = TimeOfDay(hour: start, minute: 0);
     endTime = TimeOfDay(hour: end, minute: 0);
     length = endTime!.hour - startTime!.hour;
-
     super.initState();
+    setState(() {
+      widget.db.getAvailability();
+    });
   }
 
   @override
@@ -124,6 +129,24 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                 ),
               ),
             ),
+            Container(
+              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 0),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.indigo),
+                  onPressed: () async {
+                    _booked = await db.getAvailability();
+                    setState(() {
+                      isGettingAvailability = !isGettingAvailability;
+                    });
+                    print(_booked);
+                  },
+                  child: Text('Check Availability')),
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
             Text(
               'Select date',
               style: TextStyle(
@@ -170,18 +193,6 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
             SizedBox(
               height: 2.h,
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 0),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.indigo),
-                  onPressed: () async {
-                    _booked = await db.getAvailability();
-                    print(_booked);
-                  },
-                  child: Text('Check Time')),
-            ),
             Text(
               'Time',
               style: TextStyle(
@@ -221,7 +232,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                             child: InkWell(
                               onTap: () async {
                                 time = start;
-                                addOrRemove(start);
+                                addOrRemovebooked(start);
                               },
                               child: Card(
                                 elevation: 3,
@@ -231,13 +242,14 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                                   height: 5.h,
                                   width: 5.w,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(2.sp),
-                                    color: checkIfSelected(start)
-                                        ? Colors.green
-                                        : checkIfBooked(start)
-                                            ? Colors.red
-                                            : Colors.white,
-                                  ),
+                                      borderRadius: BorderRadius.circular(2.sp),
+                                      color: checkIfSelected(start)
+                                          ? Colors.green
+                                          : checkIfBooked(start)
+                                              ? Colors.red
+                                              : checkifPause(start)
+                                                  ? Colors.orange
+                                                  : Colors.white),
                                 ),
                               ),
                             ),
@@ -251,14 +263,17 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.indigo),
                 onPressed: () async {
+                  String id = DateTime.now().microsecondsSinceEpoch.toString();
                   await db.createAppointment(Appointment(
+                      appointmentid: id,
                       doctorid: widget.doctor.doctorID,
                       doctorname: widget.doctor.doctorName,
                       specialistname: widget.doctor.specialistname,
                       patientname: widget.data['name'],
                       bookdate: _selectedDate,
                       time: time,
-                      patientID: user.uid));
+                      patientID: user.uid,
+                      status: "success"));
 
                   Future.delayed(Duration(seconds: 3));
 
@@ -293,8 +308,15 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
     return false;
   }
 
-  addOrRemove(int start) {
-    if (!checkIfBooked(start)) {
+  checkifPause(int start) {
+    if (start == 12) {
+      return true;
+    }
+    return false;
+  }
+
+  addOrRemovebooked(int start) {
+    if (!checkIfBooked(start) && !checkifPause(start)) {
       for (int i = 0; i < selected.length; i++) {
         if (selected[i].date == selectedDate! && selected[i].time == start) {
           setState(() {

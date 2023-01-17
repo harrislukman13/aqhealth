@@ -1,4 +1,5 @@
 import 'package:aqhealth/controller/DatabaseController.dart';
+import 'package:aqhealth/model/patient.dart';
 import 'package:aqhealth/model/specialist.dart';
 import 'package:aqhealth/pages/appoinment/list_dr_appointment.dart';
 import 'package:aqhealth/styles/app_color.dart';
@@ -9,8 +10,10 @@ import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
 
 class CreateAppointment extends StatefulWidget {
-  const CreateAppointment({Key? key,required this.data}) : super(key: key);
+  const CreateAppointment({Key? key, required this.data, required this.db})
+      : super(key: key);
   final Map<dynamic, dynamic> data;
+  final DatabaseController db;
   @override
   State<CreateAppointment> createState() => _CreateAppointmentState();
 }
@@ -57,12 +60,13 @@ class _CreateAppointmentState extends State<CreateAppointment> {
                                       context,
                                       CupertinoPageRoute(
                                           builder: (context) => Listdoctor(
-                                            data: widget.data,
+                                                data: widget.data,
                                                 specialistID:
                                                     specialist[index].id,
                                                 specialistName:
                                                     specialist[index]
                                                         .specialistname,
+                                                db: widget.db,
                                               ))),
                                 ),
                               );

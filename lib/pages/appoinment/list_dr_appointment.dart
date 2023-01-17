@@ -12,11 +12,12 @@ class Listdoctor extends StatefulWidget {
       {Key? key,
       required this.specialistID,
       required this.specialistName,
-      required this.data})
+      required this.data,required this.db})
       : super(key: key);
   final String specialistID;
   final String specialistName;
   final Map<dynamic, dynamic> data;
+  final DatabaseController db;
   @override
   State<Listdoctor> createState() => _ListdoctorState();
 }
@@ -60,6 +61,7 @@ class _ListdoctorState extends State<Listdoctor> {
                                               ConfirmAppoinment(
                                                 data: widget.data,
                                                 doctor: doctors[index],
+                                                db: widget.db,
                                               ))),
                                   child: Card(
                                     shape: RoundedRectangleBorder(

@@ -1,4 +1,5 @@
 import 'package:aqhealth/controller/Authcountroller.dart';
+import 'package:aqhealth/pages/profile/profilesetting.dart';
 import 'package:aqhealth/styles/app_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -202,12 +203,8 @@ class _ProfileState extends State<Profile> {
             leading: Icon(Icons.settings),
             title: Text('Setting'),
             onTap: () => {
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => Profile(
-                            data: widget.data,
-                          )))
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => ProfileSetting()))
             },
           ),
           ListTile(
