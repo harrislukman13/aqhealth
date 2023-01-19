@@ -90,7 +90,7 @@ class DatabaseController {
 
   Future getSingleAppointment(String appointmentid) async {
     var data = await _db.collection('Appointment').doc(appointmentid).get();
-    if (data.exists) {
+    if (data.exists) { 
       Map<String, dynamic>? appointment = data.data();
       return appointment;
     }
