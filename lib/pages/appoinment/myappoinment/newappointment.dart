@@ -34,7 +34,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                             backgroundColor: Colors.white,
                             radius: 20,
                             backgroundImage: NetworkImage(
-                                "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                                widget.appointment![index].docURL!),
                           ),
                           title: Text(
                             widget.appointment![index].doctorname!,

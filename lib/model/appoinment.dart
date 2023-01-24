@@ -10,6 +10,7 @@ class Appointment {
   String? patientID;
   String? specialistname;
   String? status;
+  String? docURL;
 
   Appointment(
       {this.appointmentid,
@@ -20,7 +21,8 @@ class Appointment {
       this.specialistname,
       this.doctorid,
       this.patientname,
-      this.status});
+      this.status,
+      this.docURL});
 
   factory Appointment.fromFireStore(DocumentSnapshot doc) {
     return Appointment(
@@ -32,6 +34,7 @@ class Appointment {
         time: doc['time'],
         patientID: doc['patientid'],
         patientname: doc['patientname'],
-        status: doc['status']);
+        status: doc['status'],
+        docURL: doc['url']);
   }
 }

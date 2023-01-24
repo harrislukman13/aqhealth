@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:aqhealth/styles/app_color.dart';
 import 'package:aqhealth/styles/custom_text_field.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 import 'package:aqhealth/styles/app_color.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,6 +27,7 @@ class completProfile extends StatefulWidget {
 }
 
 class _completProfileState extends State<completProfile> {
+  
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _icController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -164,7 +166,7 @@ class _completProfileState extends State<completProfile> {
                     ),
                     const SizedBox(height: 20),
                     CustomTextFormField(
-                      hintText: 'IC',
+                      hintText: 'IC Number',
                       focusNode: _icFocus,
                       controller: _icController,
                       validator: (value) => value!.length <= 11
@@ -232,7 +234,7 @@ class _completProfileState extends State<completProfile> {
                       focusNode: _stateFocus,
                       controller: _stateController,
                       validator: (value) =>
-                          value!.isEmpty ? 'please fill the blankS' : null,
+                          value!.isEmpty ? 'please fill the blank' : null,
                     ),
                     SizedBox(height: 10),
                     TextButton(
@@ -270,11 +272,11 @@ class _completProfileState extends State<completProfile> {
                               isLoading = false;
                             });
                           }
+                          Future.delayed(
+                            const Duration(seconds: 3),
+                          );
+                          Navigator.pop(context);
                         }
-                        Future.delayed(
-                          const Duration(seconds: 3),
-                        );
-                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Complete',
@@ -283,7 +285,7 @@ class _completProfileState extends State<completProfile> {
                     ),
                   ],
                 )),
-          )
+          ),
         ],
       ),
     );

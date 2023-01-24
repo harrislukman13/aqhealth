@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:aqhealth/model/appoinment.dart';
 import 'package:aqhealth/model/doctor.dart';
@@ -133,12 +133,30 @@ class DatabaseController {
         "patientname": a.patientname,
         "doctorid": a.doctorid,
         "specialistname": a.specialistname,
-        "status": a.status
+        "status": a.status,
+        'url': a.docURL
       });
       return true;
     } catch (e) {
       print(e);
       return false;
+    }
+  }
+
+  Future<void> updatePatient(Patient a, String uid) async {
+    try {
+      await _db.collection('User').doc(uid).update({
+        'name': a.name,
+        'gender': a.gender,
+        'ic': a.ic,
+        'phone': a.phonenum,
+        'role': a.role,
+        'state': a.state,
+        'url': a.url,
+        'address': a.address
+      });
+    } catch (e) {
+      log(e.toString());
     }
   }
 }

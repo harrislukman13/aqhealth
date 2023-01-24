@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
                         ),
                         children: [
                           MenuBox(
-                              icon: 'assets/icons/appoinment.ico',
+                              icon: 'assets/icons/createappointment.ico',
                               label: 'Make Appoinment',
                               onTap: () => Navigator.push(
                                   context,
@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
                                             db: db,
                                           )))),
                           MenuBox(
-                              icon: 'assets/icons/appoinment.ico',
+                              icon: 'assets/icons/appointments.ico',
                               label: 'My Appointment',
                               onTap: () {
                                 Navigator.push(
@@ -146,8 +146,10 @@ class _HomeState extends State<Home> {
                                                   backgroundColor: Colors.white,
                                                   radius: 20,
                                                   child: CircleAvatar(
-                                                    backgroundImage: NetworkImage(
-                                                        "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                            appointment[index]
+                                                                .docURL!),
                                                   ),
                                                 ),
                                                 SizedBox(

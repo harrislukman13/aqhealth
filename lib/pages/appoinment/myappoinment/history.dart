@@ -38,11 +38,11 @@ class _HistoryState extends State<History> {
                             leading: CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 20,
-                              backgroundImage: NetworkImage(
-                                  "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                              backgroundImage:
+                                  NetworkImage(appointments![index].docURL!),
                             ),
                             title: Text(
-                              appointments![index].doctorname!,
+                              appointments[index].doctorname!,
                               style: TextStyle(
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.bold,

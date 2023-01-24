@@ -283,7 +283,8 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                                 bookdate: _selectedDate,
                                 time: time,
                                 patientID: user.uid,
-                                status: "success"));
+                                status: "success",
+                                docURL: widget.doctor.url));
 
                             Future.delayed(Duration(seconds: 3));
 

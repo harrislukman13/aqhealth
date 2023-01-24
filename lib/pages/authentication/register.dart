@@ -37,8 +37,11 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: ListView(
         children: [
+          SizedBox(
+            height: 15.h,
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -56,6 +59,11 @@ class _RegisterState extends State<Register> {
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      const SizedBox(height: 10),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset('assets/hospital.png'),
                       ),
                       const SizedBox(height: 10),
                       CustomTextFormField(
