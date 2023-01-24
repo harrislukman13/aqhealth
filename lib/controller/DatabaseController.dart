@@ -28,7 +28,8 @@ class DatabaseController {
         'ic': a.ic,
         'gender': a.gender,
         'address': a.address,
-        'state': a.state
+        'state': a.state,
+        'url': a.url
       });
 
       data = _db.collection('Patient').doc(uid).set({
@@ -38,7 +39,8 @@ class DatabaseController {
         'ic': a.ic,
         'gender': a.gender,
         'address': a.address,
-        'state': a.state
+        'state': a.state,
+        'url': a.url
       });
     } catch (e) {
       print(e.toString());
@@ -70,7 +72,7 @@ class DatabaseController {
         .toList());
   }
 
-  Future<List<Appointment>> getAvailability() async {
+  Future<List<Appointment>> getAppointmentAvailability() async {
     QuerySnapshot<Map<String, dynamic>> data =
         await _db.collection('Appointment').get();
     List<Appointment> appointmets =
@@ -90,26 +92,28 @@ class DatabaseController {
 
   Future getSingleAppointment(String appointmentid) async {
     var data = await _db.collection('Appointment').doc(appointmentid).get();
-    if (data.exists) { 
+    if (data.exists) {
       Map<String, dynamic>? appointment = data.data();
       return appointment;
     }
   }
 
-  Future<List<Appointment>> getLatestApointment() async {
+  Future<List<Appointment>> getLatestApointment(String uid) async {
     QuerySnapshot<Map<String, dynamic>> data = await _db
         .collection('Appointment')
         .where('status', isEqualTo: 'success')
+        .where('patientid', isEqualTo: uid)
         .get();
     List<Appointment> appointments =
         data.docs.map((doc) => Appointment.fromFireStore(doc)).toList();
     return appointments;
   }
 
-  Future<List<Appointment>> getHistoryApointment() async {
+  Future<List<Appointment>> getHistoryApointment(String uid) async {
     QuerySnapshot<Map<String, dynamic>> data = await _db
         .collection('Appointment')
         .where('status', isEqualTo: 'completed')
+        .where('patientid', isEqualTo: uid)
         .get();
     List<Appointment> appointments =
         data.docs.map((doc) => Appointment.fromFireStore(doc)).toList();

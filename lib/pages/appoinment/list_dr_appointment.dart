@@ -12,7 +12,8 @@ class Listdoctor extends StatefulWidget {
       {Key? key,
       required this.specialistID,
       required this.specialistName,
-      required this.data,required this.db})
+      required this.data,
+      required this.db})
       : super(key: key);
   final String specialistID;
   final String specialistName;
@@ -86,8 +87,11 @@ class _ListdoctorState extends State<Listdoctor> {
                                                         Colors.white,
                                                     radius: 50,
                                                     child: CircleAvatar(
-                                                      backgroundImage: NetworkImage(
-                                                          "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              doctors[index]
+                                                                  .url!),
+                                                      radius: 40,
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -95,11 +99,11 @@ class _ListdoctorState extends State<Listdoctor> {
                                                   ),
                                                   _DrDescription(
                                                       name: doctors[index]
-                                                          .doctorName,
+                                                          .doctorName!,
                                                       profesion: doctors[index]
-                                                          .specialistname,
+                                                          .specialistname!,
                                                       desc: doctors[index]
-                                                          .description)
+                                                          .description!)
                                                 ]),
                                           ],
                                         ),

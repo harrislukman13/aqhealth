@@ -1,13 +1,15 @@
 import 'package:aqhealth/model/appoinment.dart';
+import 'package:aqhealth/model/patient.dart';
 import 'package:aqhealth/pages/appoinment/myappoinment/history.dart';
 import 'package:aqhealth/pages/appoinment/myappoinment/newappointment.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class MyAppointment extends StatefulWidget {
-  const MyAppointment({Key? key, this.appointment}) : super(key: key);
+  const MyAppointment({Key? key, this.appointment,required this.user}) : super(key: key);
 
   final List<Appointment>? appointment;
+  final UserModel user;
 
   @override
   State<MyAppointment> createState() => _MyAppointmentState();
@@ -119,7 +121,7 @@ class _MyAppointmentState extends State<MyAppointment> {
                 NewAppointment(
                   appointment: widget.appointment,
                 ),
-                History(),
+                History(user: widget.user,),
               ],
             ),
           ),

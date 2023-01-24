@@ -15,6 +15,7 @@ class Patient {
   String? address;
   String? gender;
   String? state;
+  String? url;
 
   Patient(
       {this.id,
@@ -24,7 +25,8 @@ class Patient {
       this.gender,
       this.ic,
       this.address,
-      this.state});
+      this.state,
+      this.url});
 
   factory Patient.fromFireStore(DocumentSnapshot doc, {String userId = ''}) {
     return Patient(
@@ -35,6 +37,7 @@ class Patient {
         gender: doc['gender'],
         ic: doc['ic'],
         address: doc['address'],
-        state: doc['state']);
+        state: doc['state'],
+        url: doc['url']);
   }
 }

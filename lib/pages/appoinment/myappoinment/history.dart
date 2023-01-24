@@ -1,12 +1,13 @@
 import 'package:aqhealth/controller/DatabaseController.dart';
 import 'package:aqhealth/model/appoinment.dart';
+import 'package:aqhealth/model/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 class History extends StatefulWidget {
-  const History({Key? key}) : super(key: key);
-
+  const History({Key? key, required this.user}) : super(key: key);
+  final UserModel user;
   @override
   State<History> createState() => _HistoryState();
 }
@@ -15,7 +16,8 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: DatabaseController.withoutUID().getHistoryApointment(),
+        future: DatabaseController.withoutUID()
+            .getHistoryApointment(widget.user.uid),
         builder: (context, AsyncSnapshot<List<Appointment>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             List<Appointment>? appointments = snapshot.data;

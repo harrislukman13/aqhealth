@@ -45,15 +45,15 @@ class AuthController {
   }
 
   Future register(
-    String email,
-    String password,
-    String name,
-    String ic,
-    String phonenum,
-    String gender,
-    String address,
-    String state,
-  ) async {
+      String email,
+      String password,
+      String name,
+      String ic,
+      String phonenum,
+      String gender,
+      String address,
+      String state,
+      String url) async {
     try {
       UserCredential? result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -66,6 +66,7 @@ class AuthController {
         phonenum: phonenum,
         address: address,
         state: state,
+        url: url,
       ));
       return _userFromFirebaseUser(user);
     } catch (e) {

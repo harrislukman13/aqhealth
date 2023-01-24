@@ -3,6 +3,7 @@ import 'package:aqhealth/model/appoinment.dart';
 import 'package:aqhealth/model/doctor.dart';
 import 'package:aqhealth/model/patient.dart';
 import 'package:aqhealth/pages/dashboard/home/home.dart';
+import 'package:aqhealth/pages/dashboard/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ionicons/ionicons.dart';
@@ -55,14 +56,14 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
 
   @override
   void initState() {
-    int start = widget.doctor.startTime;
-    int end = widget.doctor.endTime;
+    int start = widget.doctor.startTime!;
+    int end = widget.doctor.endTime!;
     startTime = TimeOfDay(hour: start, minute: 0);
     endTime = TimeOfDay(hour: end, minute: 0);
     length = endTime!.hour - startTime!.hour;
     super.initState();
     setState(() {
-      widget.db.getAvailability();
+      widget.db.getAppointmentAvailability();
     });
   }
 
@@ -96,8 +97,8 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                       backgroundColor: Colors.white,
                       radius: 50,
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
+                        backgroundImage: NetworkImage(widget.doctor.url!),
+                        radius: 40,
                       ),
                     ),
                     SizedBox(
@@ -107,7 +108,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          widget.doctor.doctorName,
+                          widget.doctor.doctorName!,
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
@@ -117,7 +118,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                         const Padding(
                             padding: EdgeInsets.symmetric(vertical: 2.0)),
                         Text(
-                          widget.doctor.description,
+                          widget.doctor.description!,
                           style: const TextStyle(
                             fontSize: 10.0,
                             color: Colors.black,
@@ -136,7 +137,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.indigo),
                   onPressed: () async {
-                    _booked = await db.getAvailability();
+                    _booked = await db.getAppointmentAvailability();
                     setState(() {
                       isGettingAvailability = !isGettingAvailability;
                     });
@@ -147,143 +148,155 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
             SizedBox(
               height: 2.h,
             ),
-            Text(
-              'Select date',
-              style: TextStyle(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.indigo),
-            ),
-            SizedBox(
-              height: 1.h,
-            ),
-            Container(
-              padding: EdgeInsets.all(1.h),
-              child: TableCalendar(
-                focusedDay: focusDate,
-                firstDay: DateTime.now(),
-                lastDay: DateTime(
-                  DateTime.now().year + 1,
-                  DateTime.now().month,
-                  DateTime.now().day,
-                ),
-                selectedDayPredicate: (day) {
-                  return isSameDay(selectedDate, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    selectedDate = selectedDay;
-                    _selectedDate =
-                        DateFormat('yyyy-MM-dd').format(selectedDate!);
-                    focusDate = focusedDay;
-                  });
-                },
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  focusDate = focusedDay;
-                },
-              ),
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Text(
-              'Time',
-              style: TextStyle(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.indigo),
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            _booked != null
-                ? GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 1.5,
-                    ),
-                    itemCount: length + 1,
-                    itemBuilder: ((context, index) {
-                      int start = startTime!.hour + index;
-                      String startString =
-                          TimeOfDay(hour: start, minute: 0).format(context);
-                      int end = start + 1;
-                      String endString =
-                          TimeOfDay(hour: end, minute: 0).format(context);
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(startString + ' -' + endString),
-                          SizedBox(
-                            height: 1.h,
+            isGettingAvailability
+                ? Column(
+                    children: [
+                      Text(
+                        'Select date',
+                        style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.indigo),
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(1.h),
+                        child: TableCalendar(
+                          focusedDay: focusDate,
+                          firstDay: DateTime.now(),
+                          lastDay: DateTime(
+                            DateTime.now().year + 1,
+                            DateTime.now().month,
+                            DateTime.now().day,
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(2.sp),
-                            child: InkWell(
-                              onTap: () async {
-                                time = start;
-                                addOrRemovebooked(start);
-                              },
-                              child: Card(
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2.sp)),
-                                child: Container(
-                                  height: 5.h,
-                                  width: 5.w,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(2.sp),
-                                      color: checkIfSelected(start)
-                                          ? Colors.green
-                                          : checkIfBooked(start)
-                                              ? Colors.red
-                                              : checkifPause(start)
-                                                  ? Colors.orange
-                                                  : Colors.white),
-                                ),
+                          selectedDayPredicate: (day) {
+                            return isSameDay(selectedDate, day);
+                          },
+                          onDaySelected: (selectedDay, focusedDay) {
+                            setState(() {
+                              selectedDate = selectedDay;
+                              _selectedDate = DateFormat('yyyy-MM-dd')
+                                  .format(selectedDate!);
+                              focusDate = focusedDay;
+                            });
+                          },
+                          onFormatChanged: (format) {
+                            if (_calendarFormat != format) {
+                              setState(() {
+                                _calendarFormat = format;
+                              });
+                            }
+                          },
+                          onPageChanged: (focusedDay) {
+                            focusDate = focusedDay;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Time',
+                        style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.indigo),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      _booked != null
+                          ? GridView.builder(
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 1.5,
                               ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }))
-                : SizedBox.shrink(),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.indigo),
-                onPressed: () async {
-                  String id = DateTime.now().microsecondsSinceEpoch.toString();
-                  await db.createAppointment(Appointment(
-                      appointmentid: id,
-                      doctorid: widget.doctor.doctorID,
-                      doctorname: widget.doctor.doctorName,
-                      specialistname: widget.doctor.specialistname,
-                      patientname: widget.data['name'],
-                      bookdate: _selectedDate,
-                      time: time,
-                      patientID: user.uid,
-                      status: "success"));
+                              itemCount: length + 1,
+                              itemBuilder: ((context, index) {
+                                int start = startTime!.hour + index;
+                                String startString =
+                                    TimeOfDay(hour: start, minute: 0)
+                                        .format(context);
+                                int end = start + 1;
+                                String endString =
+                                    TimeOfDay(hour: end, minute: 0)
+                                        .format(context);
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(startString + ' -' + endString),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(2.sp),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          time = start;
+                                          addOrRemovebooked(start);
+                                        },
+                                        child: Card(
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.sp)),
+                                          child: Container(
+                                            height: 5.h,
+                                            width: 5.w,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(2.sp),
+                                                color: checkIfSelected(start)
+                                                    ? Colors.green
+                                                    : checkIfBooked(start)
+                                                        ? Colors.red
+                                                        : checkifPause(start)
+                                                            ? Colors.orange
+                                                            : Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }))
+                          : SizedBox.shrink(),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.indigo),
+                          onPressed: () async {
+                            String id = DateTime.now()
+                                .microsecondsSinceEpoch
+                                .toString();
+                            await db.createAppointment(Appointment(
+                                appointmentid: id,
+                                doctorid: widget.doctor.doctorID,
+                                doctorname: widget.doctor.doctorName,
+                                specialistname: widget.doctor.specialistname,
+                                patientname: widget.data['name'],
+                                bookdate: _selectedDate,
+                                time: time,
+                                patientID: user.uid,
+                                status: "success"));
 
-                  Future.delayed(Duration(seconds: 3));
+                            Future.delayed(Duration(seconds: 3));
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) =>
-                              Home(data: widget.data, user: user))));
-                },
-                child: const Text("Submit")),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => Mainpage(
+                                        data: widget.data, user: user))));
+                          },
+                          child: const Text("Submit")),
+                    ],
+                  )
+                : Container(),
           ],
         ),
       ),

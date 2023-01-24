@@ -1,22 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Doctor {
-  String doctorID;
-  String doctorName;
-  String specialistId;
-  String description;
-  String specialistname;
-  int startTime;
-  int endTime;
+  String? doctorID;
+  String? doctorName;
+  String? specialistId;
+  String? description;
+  String? specialistname;
+  int? startTime;
+  int? endTime;
+  String? url;
 
   Doctor(
-      {required this.doctorID,
-      required this.doctorName,
-      required this.specialistId,
-      required this.description,
-      required this.specialistname,
-      required this.startTime,
-      required this.endTime});
+      {this.doctorID,
+      this.doctorName,
+      this.specialistId,
+      this.description,
+      this.specialistname,
+      this.startTime,
+      this.endTime,
+      this.url});
 
   factory Doctor.fromFireStore(DocumentSnapshot doc) {
     return Doctor(
@@ -26,6 +28,7 @@ class Doctor {
         specialistname: doc['specialistname'],
         description: doc['description'],
         startTime: doc['starttime'],
-        endTime: doc['endtime']);
+        endTime: doc['endtime'],
+        url: doc['url']);
   }
 }

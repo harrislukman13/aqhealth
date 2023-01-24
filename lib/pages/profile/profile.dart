@@ -53,7 +53,8 @@ class _ProfileState extends State<Profile> {
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.indigo,
-                                //backgroundImage: Image(image: ),
+                                backgroundImage:
+                                    NetworkImage(widget.data['url']),
                               ),
                               SizedBox(width: 20),
                               Text(
@@ -160,7 +161,7 @@ class _ProfileState extends State<Profile> {
                   children: [
                     //qr
                     QrImage(
-                      data: "1234567890",
+                      data: widget.data['name'],
                       version: QrVersions.auto,
                       size: 300.0,
                       dataModuleStyle: QrDataModuleStyle(
@@ -181,12 +182,13 @@ class _ProfileState extends State<Profile> {
   Drawer SideMenu() {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero,
+        padding: EdgeInsets.all(5),
         children: <Widget>[
           DrawerHeader(
             child: CircleAvatar(
               radius: 65,
               backgroundColor: AppColor.primary,
+              backgroundImage: NetworkImage(widget.data['url']),
             ),
           ),
           ListTile(

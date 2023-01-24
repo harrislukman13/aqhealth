@@ -26,7 +26,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final db = DatabaseController(uid: widget.user.uid);
     return FutureBuilder(
-        future: DatabaseController.withoutUID().getLatestApointment(),
+        future: DatabaseController.withoutUID()
+            .getLatestApointment(widget.user.uid),
         builder: (context, AsyncSnapshot<List<Appointment>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             List<Appointment>? appointment = snapshot.data;
@@ -99,6 +100,7 @@ class _HomeState extends State<Home> {
                                     CupertinoPageRoute(
                                         builder: (context) => MyAppointment(
                                               appointment: appointment,
+                                              user: widget.user,
                                             )));
                               }),
                         ]),
@@ -106,7 +108,7 @@ class _HomeState extends State<Home> {
                       height: 5.h,
                     ),
                     const Text(
-                      "Appoinment Today",
+                      "Upcoming Appointment",
                       style: TextStyle(color: Colors.indigo),
                       textAlign: TextAlign.start,
                     ),
