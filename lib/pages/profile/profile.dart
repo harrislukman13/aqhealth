@@ -1,4 +1,5 @@
 import 'package:aqhealth/controller/Authcountroller.dart';
+import 'package:aqhealth/pages/Notification/notification.dart';
 import 'package:aqhealth/pages/profile/profilesetting.dart';
 import 'package:aqhealth/styles/app_color.dart';
 import 'package:flutter/cupertino.dart';
@@ -224,12 +225,12 @@ class _ProfileState extends State<Profile> {
                         borderRadius: BorderRadius.circular(100),
                         color: Colors.blueAccent.withOpacity(0.1)),
                     child: Icon(
-                      CupertinoIcons.money_dollar_circle,
+                      CupertinoIcons.bell_fill,
                       color: Colors.indigo,
                     ),
                   ),
                   title: Text(
-                    'App Purchase',
+                    'Notification',
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                   trailing: Container(
@@ -243,7 +244,12 @@ class _ProfileState extends State<Profile> {
                       color: Colors.grey,
                     ),
                   ),
-                  onTap: () => {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => MyNotifications()));
+                  },
                 ),
                 ListTile(
                   leading: Container(
@@ -384,8 +390,12 @@ class _ProfileState extends State<Profile> {
             leading: Icon(Icons.settings),
             title: Text('Setting'),
             onTap: () => {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => ProfileSetting(data: widget.data,)))
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => ProfileSetting(
+                            data: widget.data,
+                          )))
             },
           ),
           ListTile(

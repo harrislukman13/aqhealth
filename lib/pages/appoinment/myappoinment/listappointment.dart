@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class MyAppointment extends StatefulWidget {
-  const MyAppointment({Key? key, this.appointment,required this.user}) : super(key: key);
+  const MyAppointment({Key? key, this.appointment,required this.user,required this.data}) : super(key: key);
 
   final List<Appointment>? appointment;
   final UserModel user;
+  final Map<dynamic, dynamic> data;
+
 
   @override
   State<MyAppointment> createState() => _MyAppointmentState();
@@ -120,6 +122,8 @@ class _MyAppointmentState extends State<MyAppointment> {
               children: [
                 NewAppointment(
                   appointment: widget.appointment,
+                  user: widget.user,
+                  data: widget.data,
                 ),
                 History(user: widget.user,),
               ],

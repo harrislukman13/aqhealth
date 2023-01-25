@@ -108,7 +108,7 @@ class _QueueState extends State<Queue> {
                                   child: Image.asset('assets/queue.png'),
                                 ),
                                 Text(
-                                  'You not entering the Queue',
+                                  'Please Check In first',
                                   style: TextStyle(fontWeight: FontWeight.w500),
                                 ),
                               ],
@@ -349,9 +349,18 @@ class _QueueState extends State<Queue> {
                         elevation: 0,
                       ),
                       body: Container(
-                        padding: EdgeInsets.all(3.h),
-                        child: Text('You not entering the Queue'),
-                      ),
+                          padding: EdgeInsets.all(3.h),
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                child: Image.asset('assets/queue.png'),
+                              ),
+                              Text(
+                                'Please Check In first',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          )),
                     );
                   }
                 } else {
@@ -362,9 +371,18 @@ class _QueueState extends State<Queue> {
                       elevation: 0,
                     ),
                     body: Container(
-                      padding: EdgeInsets.all(3.h),
-                      child: Text('You not entering the Queue'),
-                    ),
+                        padding: EdgeInsets.all(3.h),
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              child: Image.asset('assets/queue.png'),
+                            ),
+                            Text(
+                              'Please Check In first',
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        )),
                   );
                 }
               },

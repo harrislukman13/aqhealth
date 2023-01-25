@@ -52,13 +52,13 @@ class _HomeState extends State<Home> {
                                 fontSize: 30.sp,
                                 fontWeight: FontWeight.bold),
                           ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
                           Text(
                             'Hello',
                             style: TextStyle(
                                 color: Colors.indigo, fontSize: 15.sp),
-                          ),
-                          SizedBox(
-                            width: 3.w,
                           ),
                           Text(
                             widget.data['name'],
@@ -101,6 +101,7 @@ class _HomeState extends State<Home> {
                                         builder: (context) => MyAppointment(
                                               appointment: appointment,
                                               user: widget.user,
+                                              data: widget.data,
                                             )));
                               }),
                         ]),
