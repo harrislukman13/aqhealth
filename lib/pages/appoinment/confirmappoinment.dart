@@ -70,7 +70,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
-    final db = DatabaseController(uid: user!.uid);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create Appointment"),
@@ -137,7 +137,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.indigo),
                   onPressed: () async {
-                    _booked = await db.getAppointmentAvailability();
+                    _booked = await widget.db.getAppointmentAvailability();
                     setState(() {
                       isGettingAvailability = !isGettingAvailability;
                     });
@@ -274,7 +274,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                             String id = DateTime.now()
                                 .microsecondsSinceEpoch
                                 .toString();
-                            await db.createAppointment(Appointment(
+                            await widget.db.createAppointment(Appointment(
                                 appointmentid: id,
                                 doctorid: widget.doctor.doctorID,
                                 doctorname: widget.doctor.doctorName,
@@ -282,7 +282,7 @@ class _ConfirmAppoinmentState extends State<ConfirmAppoinment> {
                                 patientname: widget.data['name'],
                                 bookdate: _selectedDate,
                                 time: time,
-                                patientID: user.uid,
+                                patientID: user!.uid,
                                 status: "success",
                                 docURL: widget.doctor.url));
 

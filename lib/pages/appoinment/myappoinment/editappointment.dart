@@ -4,6 +4,7 @@ import 'package:aqhealth/controller/DatabaseController.dart';
 import 'package:aqhealth/model/appoinment.dart';
 import 'package:aqhealth/model/patient.dart';
 import 'package:aqhealth/pages/dashboard/mainpage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -224,6 +225,19 @@ class _EditAppointmentState extends State<EditAppointment> {
                                                     await db.deleteAppointment(
                                                         widget.appointments
                                                             .appointmentid!);
+                                                    log(widget.appointments
+                                                        .appointmentid!
+                                                        .toString());
+
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        CupertinoPageRoute(
+                                                            builder: ((context) =>
+                                                                Mainpage(
+                                                                    data: widget
+                                                                        .data,
+                                                                    user: widget
+                                                                        .user))));
                                                   },
                                                   child: Text("Delete"))
                                             ],
